@@ -17,7 +17,7 @@ namespace chp
         {
             NQubits = nQubits;
             // By default, this array is full of false
-            Table = new bool[2 * NQubits + 1, 2 * NQubits + 1];
+            Table = new bool[2 * NQubits, 2 * NQubits + 1];
             Table.SetDiagonal(true);
 
         }
@@ -129,6 +129,67 @@ namespace chp
         public override void OnDumpRegister<T>(T location, IQArray<Qubit> qubits)
         {
             OnMessage("Only DumpMachine is supported in this simulator.");
+        }
+
+        public override Result M(Qubit qubit) => MeasureByIndex(qubit.Id);
+
+        private Result MeasureByIndex(int idx)
+        {
+            // Non-Deterministic Case
+            if (Table.Column(idx).Skip(NQubits).Any(b => b))
+            {
+                var result = (new System.Random()).Next(2) == 1;
+                var collisions = Table.Column(idx).IndicesWhere(b => b).ToList();
+                var idxFirst = NQubits + Table.Column(idx).Skip(NQubits).IndicesWhere(b => b).First();
+                
+                foreach (var idxCollision in collisions.Where(idxCollision => idxCollision != idxFirst))
+                {
+                    Table.SetToRowSum(idxCollision, idxFirst);
+                }
+
+                foreach (var idxColumn in Enumerable.Range(0, Table.GetLength(1)))
+                {
+                    Table[idxFirst - NQubits, idxColumn] = Table[idxFirst, idxColumn]; 
+                    Table[idxFirst, idxColumn] = false;              
+                }
+                Table[idxFirst, _z(idx)] = true;
+                Table[idxFirst, _r] = result;
+                return result ? Result.One : Result.Zero;
+
+            }
+            // Deterministic Case
+            else
+            {
+                var vector = new bool[2 * NQubits + 1];
+                foreach (var idxDestabilizer in Enumerable.Range(0, NQubits))
+                {
+                    if (Table[idxDestabilizer, _x(idx)])
+                    {
+                        vector.SetToRowSum(Table, idxDestabilizer);
+                    }                    
+                }
+                return vector[^1] ? Result.One : Result.Zero;
+            }
+            
+        }
+
+        public override Result Measure(IQArray<Pauli> bases, IQArray<Qubit> qubits)
+        {
+            if (bases.Any(basis => basis == Pauli.PauliX || basis == Pauli.PauliY) ||
+                bases.Where(basis => basis == Pauli.PauliZ).Count() != 1)
+            {
+                throw new UnsupportedOperationException("Not yet implemented.");
+            }
+            var idxQubit = Enumerable.Zip(bases, qubits, (b, q) => (b, q)).Single(item => item.b == Pauli.PauliZ).q.Id;
+            return MeasureByIndex(idxQubit);
+        }
+
+        public override void X(Qubit qubit)
+        {
+            Hadamard(qubit.Id);
+            Phase(qubit.Id);
+            Phase(qubit.Id);
+            Hadamard(qubit.Id);
         }
     }
 }
