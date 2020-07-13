@@ -1,11 +1,13 @@
         public virtual void Assert(IQArray<Pauli> bases, IQArray<Qubit> qubits, Result result, string msg);
         public virtual void AssertProb(IQArray<Pauli> bases, IQArray<Qubit> qubits, double probabilityOfZero, string msg, double tol);
+        
         public virtual void ControlledExp(IQArray<Qubit> controls, IQArray<Pauli> paulis, double theta, IQArray<Qubit> qubits);
         public virtual void ControlledExpFrac(IQArray<Qubit> controls, IQArray<Pauli> paulis, long numerator, long power, IQArray<Qubit> qubits);
         public virtual void ControlledR(IQArray<Qubit> controls, Pauli axis, double theta, Qubit qubit);
         public virtual void ControlledR1(IQArray<Qubit> controls, double theta, Qubit qubit);
         public virtual void ControlledR1Frac(IQArray<Qubit> controls, long numerator, long power, Qubit qubit);
         public virtual void ControlledRFrac(IQArray<Qubit> controls, Pauli axis, long numerator, long power, Qubit qubit);
+        
         public virtual void ControlledS(IQArray<Qubit> controls, Qubit qubit);
         public virtual void ControlledSAdjoint(IQArray<Qubit> controls, Qubit qubit);
         public virtual void ControlledSWAP(IQArray<Qubit> controls, Qubit qubit1, Qubit qubit2);
@@ -38,6 +40,3 @@
         public virtual void SWAP(Qubit qubit1, Qubit qubit2);
         public virtual void T(Qubit qubit);
         public virtual void TAdjoint(Qubit qubit);
-
-        public virtual void Y(Qubit qubit);
-        public virtual void Z(Qubit qubit);
