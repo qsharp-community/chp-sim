@@ -1,10 +1,16 @@
 # CHP simulator for Q\#
 
-This library implements a new classical simulator for Q# that utilizes the CHP stabilizer classical subtheory.
+This library implements a new classical simulator for Q# that utilizes the CHP stabilizer classical sub-theory.
 Based on the Python implementation by @Strilanc here: https://github.com/Strilanc/python-chp-stabilizer-simulator.
 
 ## Motivation
 
+Simulating quantum systems on a classical computer is hard to do in full generalization, as the resources needed scale exponentially with the number of qubits you want to simulate (up to about ~30 qubits on a typical machine).
+If you impose some constraints on the operations you can do in your programs, you can use a different kind of simulator that allows you to simulate hundreds of qubits by using what is called a _classical sub-theory_ of quantum physics.
+There are a variety of sub-theories that each have a different set of constraints you have to work with to leverage it.
+This repo implements a simulator for the CHP (CNOT, Hadamard, and Phase) classical sub-theory which helpfully has the constraint baked into the name.
+In this simulator, all operations it supports have to be comprised of (or decomposable to) only the operations CNOT, Hadamard, and Phase.
+If you run a program with this simulator as the target, and you ask for an operation that is not supported, the simulator will throw and exception.
 
 ## Build status
 
