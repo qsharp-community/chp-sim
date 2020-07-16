@@ -10,7 +10,7 @@ namespace chp
     {
         public StabilizerSimulator() : base(new StabilizerProcessor())
         {
-            System.Console.WriteLine("HI I AM A SIMULATOR");
+            (this.QuantumProcessor as StabilizerProcessor).Simulator = this;
         }
     }
 }

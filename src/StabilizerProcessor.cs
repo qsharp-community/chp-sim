@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.ExceptionServices;
@@ -13,6 +15,8 @@ namespace chp
     {
         private bool[,] Table;
         private int NQubits;
+        internal StabilizerSimulator? Simulator;
+
         public StabilizerProcessor(int nQubits = 1)
         {
             NQubits = nQubits;
@@ -192,9 +196,50 @@ namespace chp
         {
             if (!bases.TryGetSingleZ(out var idx))
             {
-                throw new UnsupportedOperationException("Not yet implemented.");
+                // throw new UnsupportedOperationException("Not yet implemented.");
+                var aux = this.Simulator!.QubitManager?.Allocate();
+                if (aux == null) throw new NullReferenceException("Qubit manager was null.");
+                try
+                {
+                    WriteToScratch(bases, qubits, aux);
+                    return MeasureByIndex(aux.Id);
+                }
+                finally
+                {
+                    this.Simulator!.QubitManager?.Release(aux);
+                }
             }
             return MeasureByIndex(idx);
+        }
+
+        private void WriteToScratch(IQArray<Pauli> bases, IQArray<Qubit> qubits, Qubit aux)
+        {
+            foreach (var (pauli, qubit) in Enumerable.Zip(bases, qubits, (pauli, qubit) => (pauli, qubit)))
+            {
+                switch (pauli)
+                {
+                    case Pauli.PauliI:
+                        break;
+
+                    case Pauli.PauliX:
+                        H(qubit);
+                        ControlledX(new QArray<Qubit>(new[] { qubit }), aux);
+                        H(qubit);
+                        break;
+
+                    case Pauli.PauliY:
+                        H(qubit);
+                        S(qubit);
+                        ControlledX(new QArray<Qubit>(new[] { qubit }), aux);
+                        S(qubit);
+                        H(qubit);
+                        break;
+
+                    default:
+                        ControlledX(new QArray<Qubit>(new[] { qubit }), aux);
+                        break;
+                }
+            }
         }
 
         public override void Reset(Qubit qubit) {
@@ -306,7 +351,28 @@ namespace chp
 
             if (!bases.TryGetSingleZ(out var idx))
             {
-                throw new UnsupportedOperationException("Not yet implemented.");
+                var aux = this.Simulator!.QubitManager?.Allocate();
+                if (aux == null) throw new NullReferenceException("Qubit manager was null.");
+                try
+                {
+                    WriteToScratch(bases, qubits, aux);
+                    AssertProb(
+                        new QArray<Pauli>(new[] { Pauli.PauliZ }), 
+                        new QArray<Qubit>(new[] { aux }), 
+                        probabilityOfZero,
+                        msg, 
+                        tol
+                    );
+                    WriteToScratch(
+                        new QArray<Pauli>(bases.Reverse()),
+                        new QArray<Qubit>(qubits.Reverse()),
+                        aux
+                    );
+                }
+                finally
+                {
+                    this.Simulator!.QubitManager?.Release(aux);
+                }
             }
             else
             {
