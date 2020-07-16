@@ -7,23 +7,31 @@ using Microsoft.Quantum.Simulation.Core;
 
 // This C# project is based on a Python implementation by @Strilanc here: 
 // https://github.com/Strilanc/python-chp-stabilizer-simulator
+
+// TODO Next:
+// - public virtual void Assert(IQArray<Pauli> bases, IQArray<Qubit> qubits, Result result, string msg);
+// - public virtual void AssertProb(IQArray<Pauli> bases, IQArray<Qubit> qubits, double probabilityOfZero, string msg, double tol);
 namespace chp
 {
     public class StabilizerProcessor : QuantumProcessorBase
     {
         private bool[,] Table;
         private int NQubits;
-        public StabilizerProcessor(int nQubits = 2)
+        public StabilizerProcessor(int nQubits = 1)
         {
             NQubits = nQubits;
             // By default, this array is full of false
             Table = new bool[2 * NQubits, 2 * NQubits + 1];
             Table.SetDiagonal(true);
-
         }
 
+        //////////////////////////////////////////////////////////////////////
+        // Internal
+        //////////////////////////////////////////////////////////////////////
         private int _x(int idxCol) => idxCol;
+
         private int _z(int idxCol) => NQubits + idxCol;
+
         private int _r => 2 * NQubits;
 
         private void Hadamard(int target)
@@ -106,7 +114,7 @@ namespace chp
                 {
                     if (Table[idxDestabilizer, _x(idx)])
                     {
-                        vector.SetToRowSum(Table, idxDestabilizer);
+                        vector.SetToRowSum(Table, idxDestabilizer + NQubits);
                     }                    
                 }
                 return vector[^1] ? Result.One : Result.Zero;
@@ -114,10 +122,14 @@ namespace chp
             
         }
 
+        //////////////////////////////////////////////////////////////////////
+        // Overrides - Supported
+        //////////////////////////////////////////////////////////////////////
         public override void H(Qubit qubit)
         {
             Hadamard(qubit.Id);
         }
+
         public override void ControlledH(IQArray<Qubit> controls, Qubit qubit)
         {
             if (controls.Length == 0)
@@ -129,33 +141,28 @@ namespace chp
                 throw new UnsupportedOperationException("Controlled H is not a Clifford operation.");
             }
         }
+
         public override void S(Qubit qubit)
         {
             Phase(qubit.Id);
         }
 
-        public override void ControlledX(IQArray<Qubit> controls, Qubit qubit)
+        public override void SAdjoint(Qubit qubit)
         {
-            if (controls.Length == 1)
-            {
-                Cnot(controls.First().Id, qubit.Id);
-            }
-            else
-            {
-                throw new UnsupportedOperationException("Only singular controlled gates are allowed.");
-            }
-
+            Phase(qubit.Id);
+            Phase(qubit.Id);
+            Phase(qubit.Id);
         }
 
         public override void OnDumpMachine<T>(T location)
         {
             if (location is QVoid)
             {
-                System.Console.WriteLine(Table.MatrixToString());
+                System.Console.WriteLine(Table.MatrixToString(true));
             }
             else if (location is string filename)
             {
-                File.WriteAllText(filename, Table.MatrixToString());  
+                File.WriteAllText(filename, Table.MatrixToString(true));  
             }
             else
             {
@@ -190,10 +197,39 @@ namespace chp
             Hadamard(qubit.Id);
         }
 
+        public override void ControlledX(IQArray<Qubit> controls, Qubit qubit)
+        {
+            if (controls.Length == 1)
+            {
+                Cnot(controls.First().Id, qubit.Id);
+            }
+            else
+            {
+                throw new UnsupportedOperationException("Only singular controlled gates are allowed.");
+            }
+
+        }
+
         public override void Y(Qubit qubit)
         {
+            SAdjoint(qubit);
             X(qubit);
-            Phase(qubit.Id);
+            S(qubit);
+        }
+
+        public override void ControlledY(IQArray<Qubit> controls, Qubit qubit)
+        {
+            if (controls.Length == 1)
+            {
+                SAdjoint(qubit);
+                ControlledX(controls, qubit);
+                S(qubit);
+            }
+            else
+            {
+                throw new UnsupportedOperationException("Only singular controlled gates are allowed.");
+            }
+
         }
 
         public override void Z(Qubit qubit)
@@ -202,5 +238,92 @@ namespace chp
             Phase(qubit.Id);
             Phase(qubit.Id);
         }
+
+        public override void ControlledZ(IQArray<Qubit> controls, Qubit qubit)
+        {
+            if (controls.Length == 1)
+            {
+                Hadamard(qubit.Id);
+                Cnot(controls.First().Id, qubit.Id);
+                Hadamard(qubit.Id);
+            }
+            else
+            {
+                throw new UnsupportedOperationException("Only singular controlled gates are allowed.");
+            }
+
+        }
+
+        public override void SWAP(Qubit qubit1, Qubit qubit2)
+        {
+            Cnot(qubit1.Id, qubit2.Id);
+            Cnot(qubit2.Id, qubit1.Id);
+            Cnot(qubit1.Id, qubit2.Id);
+        }
+
+        public override void Reset(Qubit qubit) {
+            if (M(qubit) == Result.One) { X(qubit); }
+        }
+
+        //////////////////////////////////////////////////////////////////////
+        // Overrides - Unsupported
+        //////////////////////////////////////////////////////////////////////
+        public override void ControlledExp(IQArray<Qubit> controls, IQArray<Pauli> paulis, double theta, IQArray<Qubit> qubits) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void ControlledExpFrac(IQArray<Qubit> controls, IQArray<Pauli> paulis, long numerator, long power, IQArray<Qubit> qubits) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void ControlledR(IQArray<Qubit> controls, Pauli axis, double theta, Qubit qubit) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void ControlledR1(IQArray<Qubit> controls, double theta, Qubit qubit) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void ControlledR1Frac(IQArray<Qubit> controls, long numerator, long power, Qubit qubit) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void ControlledRFrac(IQArray<Qubit> controls, Pauli axis, long numerator, long power, Qubit qubit) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void ControlledS(IQArray<Qubit> controls, Qubit qubit) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void ControlledSAdjoint(IQArray<Qubit> controls, Qubit qubit) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void ControlledSWAP(IQArray<Qubit> controls, Qubit qubit1, Qubit qubit2) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void ControlledT(IQArray<Qubit> controls, Qubit qubit) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void ControlledTAdjoint(IQArray<Qubit> controls, Qubit qubit) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void Exp(IQArray<Pauli> paulis, double theta, IQArray<Qubit> qubits) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void ExpFrac(IQArray<Pauli> paulis, long numerator, long power, IQArray<Qubit> qubits) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void R(Pauli axis, double theta, Qubit qubit) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void R1(double theta, Qubit qubit) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void R1Frac(long numerator, long power, Qubit qubit) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void RFrac(Pauli axis, long numerator, long power, Qubit qubit) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void T(Qubit qubit) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
+        public override void TAdjoint(Qubit qubit) => 
+            throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
+            
     }
 }

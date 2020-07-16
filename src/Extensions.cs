@@ -44,9 +44,9 @@ namespace chp
             }
         }
 
-        internal static string RowToString(this bool[,] matrix, int idx)
+        internal static string RowToString(this bool[] vector)
         {
-            var (xs, zs, r) = matrix.Row(idx).SplitRow();
+            var (xs, zs, r) = vector.SplitRow();
             return (r ? "-" : "+") + string.Join("",
                 Enumerable.Zip(xs, zs, (x, z) => 
                     (x, z) switch
@@ -59,9 +59,14 @@ namespace chp
                 )
             );
         }
-        
-        internal static string MatrixToString(this bool[,] matrix) =>
-            "<" + string.Join(", ", Enumerable.Range(0, matrix.GetLength(0)).Select(idx => matrix.RowToString(idx))) + ">";
+
+        internal static string RowToString(this bool[,] matrix, int idx) => matrix.Row(idx).ToArray().RowToString();
+
+        internal static string MatrixToString(this bool[,] matrix, bool showDestabilizers = false) =>
+            "<" + string.Join(", ", Enumerable.Range(matrix.GetLength(0)/2, matrix.GetLength(0)/2).Select(idx => matrix.RowToString(idx))) + ">" +
+            (showDestabilizers ?
+            "| >" + string.Join(", ", Enumerable.Range(0, matrix.GetLength(0)/2).Select(idx => matrix.RowToString(idx))) + "<" :
+            ">");
 
 
         internal static (bool[], bool[], bool) SplitRow(this IEnumerable<bool> row)
