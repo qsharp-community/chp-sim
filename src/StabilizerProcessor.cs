@@ -7,10 +7,6 @@ using Microsoft.Quantum.Simulation.Core;
 
 // This C# project is based on a Python implementation by @Strilanc here: 
 // https://github.com/Strilanc/python-chp-stabilizer-simulator
-
-// TODO Next:
-// - public virtual void Assert(IQArray<Pauli> bases, IQArray<Qubit> qubits, Result result, string msg);
-// - public virtual void AssertProb(IQArray<Pauli> bases, IQArray<Qubit> qubits, double probabilityOfZero, string msg, double tol);
 namespace chp
 {
     public class StabilizerProcessor : QuantumProcessorBase
@@ -84,10 +80,14 @@ namespace chp
 
         private Result MeasureByIndex(int idx)
         {
-            // Non-Deterministic Case
-            if (Table.Column(idx).Skip(NQubits).Any(b => b))
+            // Deterministic Case
+            if (IsMeasurementDetermined(idx, out var result))
             {
-                var result = (new System.Random()).Next(2) == 1;
+                return result;
+            }
+            // Non-Deterministic Case
+            else
+            {
                 var collisions = Table.Column(idx).IndicesWhere(b => b).ToList();
                 var idxFirst = NQubits + Table.Column(idx).Skip(NQubits).IndicesWhere(b => b).First();
                 
@@ -102,12 +102,16 @@ namespace chp
                     Table[idxFirst, idxColumn] = false;              
                 }
                 Table[idxFirst, _z(idx)] = true;
-                Table[idxFirst, _r] = result;
-                return result ? Result.One : Result.Zero;
-
+                Table[idxFirst, _r] = result == Result.One;
+                return result;
             }
-            // Deterministic Case
-            else
+            
+        }
+
+        private bool IsMeasurementDetermined(int idx, out Result result)
+        {
+            var isDetermined = !Table.Column(idx).Skip(NQubits).Any(b => b);
+            if (isDetermined)
             {
                 var vector = new bool[2 * NQubits + 1];
                 foreach (var idxDestabilizer in Enumerable.Range(0, NQubits))
@@ -117,9 +121,14 @@ namespace chp
                         vector.SetToRowSum(Table, idxDestabilizer + NQubits);
                     }                    
                 }
-                return vector[^1] ? Result.One : Result.Zero;
+                result = vector[^1] ? Result.One : Result.Zero;
             }
-            
+            else
+            {
+                result = (new System.Random()).Next(2) == 1 ? Result.One : Result.Zero;
+            }
+
+            return isDetermined;
         }
 
         //////////////////////////////////////////////////////////////////////
@@ -178,17 +187,20 @@ namespace chp
 
         public override Result M(Qubit qubit) => MeasureByIndex(qubit.Id);
 
+
         public override Result Measure(IQArray<Pauli> bases, IQArray<Qubit> qubits)
         {
-            if (bases.Any(basis => basis == Pauli.PauliX || basis == Pauli.PauliY) ||
-                bases.Where(basis => basis == Pauli.PauliZ).Count() != 1)
+            if (!bases.TryGetSingleZ(out var idx))
             {
                 throw new UnsupportedOperationException("Not yet implemented.");
             }
-            var idxQubit = Enumerable.Zip(bases, qubits, (b, q) => (b, q)).Single(item => item.b == Pauli.PauliZ).q.Id;
-            return MeasureByIndex(idxQubit);
+            return MeasureByIndex(idx);
         }
 
+        public override void Reset(Qubit qubit) {
+            if (M(qubit) == Result.One) { X(qubit); }
+        }
+        
         public override void X(Qubit qubit)
         {
             Hadamard(qubit.Id);
@@ -261,13 +273,55 @@ namespace chp
             Cnot(qubit1.Id, qubit2.Id);
         }
 
-        public override void Reset(Qubit qubit) {
-            if (M(qubit) == Result.One) { X(qubit); }
-        }
-
         //////////////////////////////////////////////////////////////////////
         // Overrides - Unsupported
         //////////////////////////////////////////////////////////////////////
+
+        public override void Assert(IQArray<Pauli> bases, IQArray<Qubit> qubits, Result result, string msg) =>
+            AssertProb(bases, qubits, result == Result.One ? 0 : 1, msg, 1e-10);
+        public override void AssertProb(IQArray<Pauli> bases, IQArray<Qubit> qubits, double probabilityOfZero, string msg, double tol) 
+        {
+            var shouldBeDeterministic = false;
+            var expectedResult = Result.Zero;
+            // Is the probability 0?
+            if (Math.Abs(probabilityOfZero-0)<tol)
+            {
+                shouldBeDeterministic = true;
+                expectedResult = Result.One;
+            }
+            else if (Math.Abs(probabilityOfZero-0.5)<tol)
+            {
+                shouldBeDeterministic = false;
+            }
+            else if (Math.Abs(probabilityOfZero-1)<tol)
+            {
+                shouldBeDeterministic = true;
+                expectedResult = Result.Zero;               
+            }
+            else
+            {
+                throw new ExecutionFailException(msg);
+            }
+
+
+            if (!bases.TryGetSingleZ(out var idx))
+            {
+                throw new UnsupportedOperationException("Not yet implemented.");
+            }
+            else
+            {
+                var isDeterministic = IsMeasurementDetermined(idx, out var result);
+                if (isDeterministic == shouldBeDeterministic) 
+                {
+                    if (!isDeterministic || expectedResult == result)
+                    {
+                        return;
+                    }
+                    throw new ExecutionFailException(msg);
+                }
+            }
+            
+        }
         public override void ControlledExp(IQArray<Qubit> controls, IQArray<Pauli> paulis, double theta, IQArray<Qubit> qubits) => 
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
             

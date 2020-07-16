@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Quantum.Simulation.Core;
 
 // This C# project is based on a Python implementation by @Strilanc here: 
 // https://github.com/Strilanc/python-chp-stabilizer-simulator
@@ -128,6 +129,31 @@ namespace chp
                 {
                     yield return item.idx;
                 }
+            }
+        }
+
+        internal static bool TryGetSingleZ(this IEnumerable<Pauli> paulis, out int idx)
+        {
+            if (paulis.Any(basis => basis == Pauli.PauliX || basis == Pauli.PauliY))
+            {
+                idx = -1;
+                return false;
+            }
+
+            var idxs = paulis
+                .Select((pauli, idx) => (pauli, idx))
+                .Where(item => item.pauli == Pauli.PauliZ)
+                .Select(item => item.idx);
+
+            if (idxs.Count() != 1)
+            {
+                idx = -1;
+                return false;
+            }
+            else
+            {
+                idx = idxs.Single();
+                return true;
             }
         }
     }
