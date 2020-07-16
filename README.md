@@ -75,6 +75,10 @@ Please see our [contributing guidelines](CONTRIBUTING.md) and our [code of condu
 
 #### Anything else that seems useful
 
+If you need to check your intuition/understanding of the stabilizer formalism, you should check out these Python packages:
+- [Quaec](http://www.cgranade.com/python-quaec/)
+- [QuTiP](http://qutip.org/)
+
 ## License
 
 MIT © [Sarah Kaiser](https://github.com/qsharp-community/qram/blob/master/LICENSE)

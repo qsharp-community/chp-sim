@@ -1,3 +1,6 @@
+// Copyright (c) Sarah Kaiser. All rights reserved.
+// Licensed under the MIT License.
+
 using System;
 using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.Simulation.QuantumProcessor;

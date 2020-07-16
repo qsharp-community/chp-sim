@@ -1,4 +1,6 @@
-﻿#nullable enable
+﻿// Copyright (c) Sarah Kaiser. All rights reserved.
+// Licensed under the MIT License.
+#nullable enable
 
 using System;
 using System.IO;
