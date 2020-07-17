@@ -17,6 +17,19 @@
 
     @Test("chp.StabilizerSimulator")
     @Test("QuantumSimulator")
+    operation PhaseRotateX2Qubit () : Unit {
+        using (q = Qubit()) {
+            H(q); //|+>
+            S(q); //|i>
+            S(q); //|->
+            AssertMeasurement([PauliX], [q], One, "Should be |->");
+            Reset(q);
+        }
+        Message("Test passed.");
+    }
+
+    @Test("chp.StabilizerSimulator")
+    @Test("QuantumSimulator")
     operation PhaseRotateYQubit () : Unit {
         using (q = Qubit()) {
             H(q); //|+>
@@ -29,11 +42,37 @@
 
     @Test("chp.StabilizerSimulator")
     @Test("QuantumSimulator")
+    operation PhaseRotateY2Qubit () : Unit {
+        using (q = Qubit()) {
+            H(q); //|+>
+            S(q); //|i>
+            S(q); //|->
+            AssertMeasurementProbability([PauliY], [q], One, 0.5, "Should be |i>", 1e-5 );
+            Reset(q);
+        }
+        Message("Test passed.");
+    }
+
+    @Test("chp.StabilizerSimulator")
+    @Test("QuantumSimulator")
     operation PhaseRotateZQubit () : Unit {
         using (q = Qubit()) {
             H(q); //|+>
             S(q); //|i>
             AssertMeasurementProbability([PauliZ], [q], One, 0.5, "Should be |i>", 1e-5 );
+            Reset(q);
+        }
+        Message("Test passed.");
+    }
+
+    @Test("chp.StabilizerSimulator")
+    @Test("QuantumSimulator")
+    operation PhaseRotateZ2Qubit () : Unit {
+        using (q = Qubit()) {
+            H(q); //|+>
+            S(q); //|i>
+            S(q); //|->
+            AssertMeasurementProbability([PauliZ], [q], One, 0.5, "Should be |->", 1e-5 );
             Reset(q);
         }
         Message("Test passed.");
