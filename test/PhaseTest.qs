@@ -138,9 +138,9 @@
             H(register[1]); //|+>
             S(register[1]); //|i>
 
-            AssertMeasurement([PauliY],[register[0]], Zero, "Should be untouched");
-            AssertMeasurementProbability([PauliY], [register[1]], One, 0.5, "Should be |i>", 1e-5 );
-            AssertMeasurement([PauliY],[register[2]], Zero, "Should be untouched");
+            AssertMeasurementProbability([PauliY], [register[0]], One, 0.5, "Should be |0>", 1e-5 );
+            AssertMeasurement([PauliY],[register[1]], Zero, "Should be |i>");
+            AssertMeasurementProbability([PauliY], [register[2]], One, 0.5, "Should be |0>", 1e-5 );
             Reset(register[1]);
         }
         Message("Test passed.");
