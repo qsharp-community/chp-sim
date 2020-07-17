@@ -134,4 +134,21 @@
         }
         Message("Test passed.");
     }
+
+    @Test("chp.StabilizerSimulator")
+    @Test("QuantumSimulator")
+    operation CNotEqual() : Unit {
+        using ((c,t) = (Qubit(),Qubit())) {
+            H(c);
+            CNOT(c,t);
+
+            let left = M(c);
+            let right = M(t);
+            EqualityFactR(left,right, "Should be the same");
+
+            Reset(c);
+            Reset(t);
+        }
+        Message("Test passed.");
+    }
 }
