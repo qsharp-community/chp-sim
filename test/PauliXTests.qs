@@ -30,6 +30,19 @@
 
     @Test("chp.StabilizerSimulator")
     @Test("QuantumSimulator")
+    operation PauliXPairQubit () : Unit {
+        using ((left,right) = (Qubit(),Qubit())) {
+            X(right);
+            AssertMeasurement([PauliZ],[left], Zero, "first qubit shouldn't have been flipped");
+            AssertMeasurement([PauliZ],[right], One, "second qubit should have been flipped");
+
+            Reset(right);
+        }
+        Message("Test passed.");
+    }
+
+    @Test("chp.StabilizerSimulator")
+    @Test("QuantumSimulator")
     operation PauliXFlipAfterHadamardQubit () : Unit {
         using (q = Qubit()) {
             H(q); // |+>
