@@ -60,4 +60,78 @@
         }
         Message("Test passed.");
     }
+
+    @Test("chp.StabilizerSimulator")
+    @Test("QuantumSimulator")
+    operation InvertedCNotZeroZeroZero() : Unit {
+        using ((c,t) = (Qubit(),Qubit())) {
+            H(c);
+            H(t);
+            CNOT(t,c);
+            H(c);
+            H(t);
+            
+            AssertMeasurement([PauliZ],[c], Zero, "Should be untouched");
+            AssertMeasurement([PauliZ],[t], Zero, "Should be untouched");
+            Reset(c);
+            Reset(t);
+        }
+        Message("Test passed.");
+    }
+
+    @Test("chp.StabilizerSimulator")
+    @Test("QuantumSimulator")
+    operation InvertedCNotZeroOneOne() : Unit {
+        using ((c,t) = (Qubit(),Qubit())) {
+            X(t);
+            H(c);
+            H(t);
+            CNOT(t,c);
+            H(c);
+            H(t);
+            
+            AssertMeasurement([PauliZ],[c], Zero, "Should be untouched");
+            AssertMeasurement([PauliZ],[t], One, "Should be rotated");
+            Reset(t);
+        }
+        Message("Test passed.");
+    }
+
+    @Test("chp.StabilizerSimulator")
+    @Test("QuantumSimulator")
+    operation InvertedCNotOneZeroOne() : Unit {
+        using ((c,t) = (Qubit(),Qubit())) {
+            X(c);
+            H(c);
+            H(t);
+            CNOT(t,c);
+            H(c);
+            H(t);
+            
+            AssertMeasurement([PauliZ],[c], One, "Should be set");
+            AssertMeasurement([PauliZ],[t], One, "Should be rotated");
+            Reset(c);
+            Reset(t);
+        }
+        Message("Test passed.");
+    }
+
+    @Test("chp.StabilizerSimulator")
+    @Test("QuantumSimulator")
+    operation InvertedCNotOneOneZero() : Unit {
+        using ((c,t) = (Qubit(),Qubit())) {
+            X(c);
+            X(t);
+            H(c);
+            H(t);
+            CNOT(t,c);
+            H(c);
+            H(t);
+            AssertMeasurement([PauliZ],[c], One, "Should be untouched");
+            AssertMeasurement([PauliZ],[t], Zero, "Should be rotated");
+
+            Reset(c);
+        }
+        Message("Test passed.");
+    }
 }
