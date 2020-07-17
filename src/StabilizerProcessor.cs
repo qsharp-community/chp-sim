@@ -19,7 +19,7 @@ namespace chp
         private int NQubits;
         internal StabilizerSimulator? Simulator;
 
-        public StabilizerProcessor(int nQubits = 1)
+        public StabilizerProcessor(int nQubits = 128)
         {
             NQubits = nQubits;
             // By default, this array is full of false

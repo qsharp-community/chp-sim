@@ -46,8 +46,11 @@
         using (register = Qubit[1024]) {
             AssertAllZero(register);
             //Make sure the compiler doesn't cheat at us'
-            X(register[1023]);
-            Reset(register[1023]);
+            for(q in register)
+            {
+				X(q);
+            }
+            ResetAll(register);
         }
         Message("Test passed.");
     }
@@ -59,8 +62,11 @@
         borrowing (register = Qubit[1024]) {
             AssertAllZero(register);
             //Make sure the compiler doesn't cheat at us'
-            X(register[1023]);
-            Reset(register[1023]);
+            for(q in register)
+            {
+				X(q);
+            }
+            ResetAll(register);
         }
         Message("Test passed.");
     }
