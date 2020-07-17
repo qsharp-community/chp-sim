@@ -107,9 +107,40 @@
         using (register = Qubit[3]) {
             H(register[1]); //|+>
             S(register[1]); //|i>
+
             AssertMeasurement([PauliZ],[register[0]], Zero, "Should be untouched");
             AssertMeasurementProbability([PauliZ], [register[1]], One, 0.5, "Should be |i>", 1e-5 );
             AssertMeasurement([PauliZ],[register[2]], Zero, "Should be untouched");
+            Reset(register[1]);
+        }
+        Message("Test passed.");
+    }
+
+    @Test("chp.StabilizerSimulator")
+    @Test("QuantumSimulator")
+    operation PhaseRotateXMultiQubit () : Unit {
+        using (register = Qubit[3]) {
+            H(register[1]); //|+>
+            S(register[1]); //|i>
+
+            AssertMeasurementProbability([PauliX], [register[0]], One, 0.5, "Should be |0>", 1e-5 );
+            AssertMeasurementProbability([PauliX], [register[1]], One, 0.5, "Should be |i>", 1e-5 );
+            AssertMeasurementProbability([PauliX], [register[2]], One, 0.5, "Should be |0>", 1e-5 );
+            Reset(register[1]);
+        }
+        Message("Test passed.");
+    }
+
+    @Test("chp.StabilizerSimulator")
+    @Test("QuantumSimulator")
+    operation PhaseRotateYMultiQubit () : Unit {
+        using (register = Qubit[3]) {
+            H(register[1]); //|+>
+            S(register[1]); //|i>
+
+            AssertMeasurement([PauliY],[register[0]], Zero, "Should be untouched");
+            AssertMeasurementProbability([PauliY], [register[1]], One, 0.5, "Should be |i>", 1e-5 );
+            AssertMeasurement([PauliY],[register[2]], Zero, "Should be untouched");
             Reset(register[1]);
         }
         Message("Test passed.");
@@ -136,8 +167,10 @@
             H(right); //|+>
             S(right); //|i>
             S(right); //|->
-            AssertMeasurementProbability([PauliX], [left], One, 0.5, "Should be untouched", 1e-5 );
+            DumpMachine();
             AssertMeasurement([PauliX], [right], One, "Should be |->");
+            DumpMachine();
+            AssertMeasurementProbability([PauliX], [left], One, 0.5, "Should be untouched", 1e-5 );
             Reset(right);
         }
         Message("Test passed.");
@@ -175,7 +208,7 @@
             S(register[1]); //|1>
 
             AssertMeasurement([PauliZ],[register[0]], Zero, "Should be untouched");
-            AssertMeasurement([PauliZ],[register[1]], One, "Qubit shouldn't have been flipped");
+            AssertMeasurement([PauliZ],[register[1]], One, "Qubit shouldn't have been flipped");            
             AssertMeasurement([PauliZ],[register[2]], Zero, "Should be untouched");
             ResetAll(register);
         }
