@@ -54,10 +54,9 @@
             X(t);
             CNOT(c,t);
             AssertMeasurement([PauliZ],[c], One, "Should be untouched");
-            AssertMeasurement([PauliZ],[t], One, "Should be rotated");
+            AssertMeasurement([PauliZ],[t], Zero, "Should be rotated");
 
             Reset(c);
-            Reset(t);
         }
         Message("Test passed.");
     }
