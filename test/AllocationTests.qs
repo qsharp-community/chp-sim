@@ -45,6 +45,9 @@
     operation AllocateManyQubits () : Unit {
         using (register = Qubit[1024]) {
             AssertAllZero(register);
+            //Make sure the compiler doesn't cheat at us'
+            X(register[1023]);
+            Reset(register[1023]);
         }
         Message("Test passed.");
     }
@@ -55,6 +58,9 @@
     operation BorrowingManyQubits () : Unit {
         borrowing (register = Qubit[1024]) {
             AssertAllZero(register);
+            //Make sure the compiler doesn't cheat at us'
+            X(register[1023]);
+            Reset(register[1023]);
         }
         Message("Test passed.");
     }
