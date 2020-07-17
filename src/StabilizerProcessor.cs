@@ -19,7 +19,7 @@ namespace chp
         private int NQubits;
         internal StabilizerSimulator? Simulator;
 
-        public StabilizerProcessor(int nQubits = 128)
+        public StabilizerProcessor(int nQubits = 1024)
         {
             NQubits = nQubits;
             // By default, this array is full of false
@@ -323,6 +323,57 @@ namespace chp
         //////////////////////////////////////////////////////////////////////
         // Overrides - Unsupported
         //////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Temporary check to give a more readable exception as long as there is no dynamic allocations.
+        /// </summary>
+        /// <param name="qubits">qubits to allocate</param>
+        public override void OnAllocateQubits(IQArray<Qubit> qubits)
+        {
+            Allocate(qubits);
+            base.OnAllocateQubits(qubits);
+        }
+        /// <summary>
+        /// Temporary check to give a more readable exception as long as there is no dynamic allocations.
+        /// </summary>
+        /// <param name="qubits">qubits to allocate</param>
+        public override void OnBorrowQubits(IQArray<Qubit> qubits, long allocatedForBorrowingCount)
+        {
+            Allocate(qubits);
+            base.OnBorrowQubits(qubits, allocatedForBorrowingCount);
+        }
+        /// <summary>
+        /// Temporary check to give a more readable exception as long as there is no dynamic allocations.
+        /// </summary>
+        /// <param name="qubits">qubits to deallocate</param>
+        public override void OnReleaseQubits(IQArray<Qubit> qubits)
+        {
+            DeAllocate(qubits);
+            base.OnReleaseQubits(qubits);
+        }
+        /// <summary>
+        /// Temporary check to give a more readable exception as long as there is no dynamic allocations.
+        /// </summary>
+        /// <param name="qubits">qubits to deallocate</param>
+        public override void OnReturnQubits(IQArray<Qubit> qubits, long releasedOnReturnCount)
+        {
+            DeAllocate(qubits);
+            base.OnReturnQubits(qubits, releasedOnReturnCount);
+        }
+
+        private void Allocate(IQArray<Qubit> qubits)
+        {
+            allocated += qubits.Count;
+            if (allocated > NQubits)
+            {
+                throw new UnsupportedOperationException($"Simulator supports a max of {NQubits} qubits. Total requested {allocated}");
+            }
+        }
+        private void DeAllocate(IQArray<Qubit> qubits)
+        {
+            allocated -= qubits.Count;
+        }
+        private int allocated = 0;
 
         public override void Assert(IQArray<Pauli> bases, IQArray<Qubit> qubits, Result result, string msg) =>
             AssertProb(bases, qubits, result == Result.One ? 0 : 1, msg, 1e-10);
