@@ -54,4 +54,20 @@
         }
         Message("Test passed.");
     }
+
+    @Test("chp.StabilizerSimulator")
+    @Test("QuantumSimulator")
+    operation MeasureBellBothTest() : Unit {
+        using ((a,b) = (Qubit(),Qubit())) {
+            H(a);
+            CNOT(a, b);
+            let x = Measure([PauliX, PauliX],[a, b]);
+
+            EqualityFactR(x, Zero, "Measurements should be Zero");
+            
+            Reset(a);
+            Reset(b);
+        }
+        Message("Test passed.");
+    }
 }
