@@ -55,6 +55,21 @@ TODO:
 - [ ] Remote development environment with VS Code
 - [ ] local install
 
+### Installation for the scratch pad notebooks
+
+1. Start with your favorite Anaconda or Miniconda install
+2. Use the included `environment-qutip.yml` or  `environment-quaec.yml` to create a conda envionment.
+    ```bash
+    $ conda env create -f <NAME OF FILE.yml>
+    ```
+3. Activate the environment and then start the Jupyter Notebook. The `<ENV NAME>` will be at the top of the yml file you used to create the environment.
+    ```bash
+    $ conda activate <ENV NAME>
+    $ jupyter notebook
+    ```
+    Then you should have Jupyter Notebook launch and you can use the corresponding notebook at the environment root for scratch work/testing your understanding of stabilizers.
+
+
 ## API Reference
 
 TODO: Complete once compiler extension is finalized for scraping API docs
