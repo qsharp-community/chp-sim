@@ -14,6 +14,7 @@ If you run a program with this simulator as the target, and you ask for an opera
 
 ## Build status
 
+![Build](https://github.com/qsharp-community/chp-sim/workflows/Build/badge.svg)
 
 ## Code style
 
