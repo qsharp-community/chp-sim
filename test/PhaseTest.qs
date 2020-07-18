@@ -7,7 +7,7 @@
     @Test("QuantumSimulator")
     operation PhaseRotateXQubit () : Unit {
         using (q = Qubit()) {
-            H(q); //|+>
+            StatePlus(q); //|+>
             S(q); //|i>
             AssertMeasurementProbability([PauliX], [q], One, 0.5, "Should be |i>", 1e-5 );
             Reset(q);
@@ -19,8 +19,7 @@
     @Test("QuantumSimulator")
     operation PhaseRotateX2Qubit () : Unit {
         using (q = Qubit()) {
-            H(q); //|+>
-            S(q); //|i>
+            StateI(q);
             S(q); //|->
             AssertMeasurement([PauliX], [q], One, "Should be |->");
             Reset(q);
