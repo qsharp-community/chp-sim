@@ -135,27 +135,14 @@ namespace chp
             }
         }
 
-        internal static bool TryGetSingleZ(this IEnumerable<Pauli> paulis, out int idx)
+        internal static bool HasNonZ(this IEnumerable<Pauli> paulis)
         {
-            if (paulis.Any(basis => basis == Pauli.PauliX || basis == Pauli.PauliY))
+            if (paulis.Any(basis => basis == Pauli.PauliI || basis == Pauli.PauliX || basis == Pauli.PauliY))
             {
-                idx = -1;
                 return false;
             }
-
-            var idxs = paulis
-                .Select((pauli, idx) => (pauli, idx))
-                .Where(item => item.pauli == Pauli.PauliZ)
-                .Select(item => item.idx);
-
-            if (idxs.Count() != 1)
+            else 
             {
-                idx = -1;
-                return false;
-            }
-            else
-            {
-                idx = idxs.Single();
                 return true;
             }
         }

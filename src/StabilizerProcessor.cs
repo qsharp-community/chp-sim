@@ -119,7 +119,7 @@ namespace chp
             var isDetermined = !table.Column(idx).Skip(nQubits).Any(b => b);
             if (isDetermined)
             {
-                var vector = new bool[2 * nQubits + 1];
+                var vector = new bool[(2 * nQubits) + 1];
                 foreach (var idxDestabilizer in Enumerable.Range(0, nQubits))
                 {
                     if (table[idxDestabilizer, X(idx)])
@@ -196,22 +196,29 @@ namespace chp
 
         public override Result Measure(IQArray<Pauli> bases, IQArray<Qubit> qubits)
         {
-            if (!bases.TryGetSingleZ(out var idx))
+            if (qubits.Count == 1)
             {
-                // throw new UnsupportedOperationException("Not yet implemented.");
-                var aux = this.Simulator!.QubitManager?.Allocate();
-                if (aux == null) throw new NullReferenceException("Qubit manager was null.");
-                try
+                if (!bases.HasNonZ())
                 {
-                    WriteToScratch(bases, qubits, aux);
-                    return MeasureByIndex(aux.Id);
+                    // throw new UnsupportedOperationException("Not yet implemented.");
+                    var aux = this.Simulator!.QubitManager?.Allocate();
+                    if (aux == null) throw new NullReferenceException("Qubit manager was null.");
+                    try
+                    {
+                        WriteToScratch(bases, qubits, aux);
+                        return MeasureByIndex(aux.Id);
+                    }
+                    finally
+                    {
+                        this.Simulator!.QubitManager?.Release(aux);
+                    }
                 }
-                finally
-                {
-                    this.Simulator!.QubitManager?.Release(aux);
-                }
+                return MeasureByIndex(qubits.First().Id);
             }
-            return MeasureByIndex(idx);
+            else 
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void WriteToScratch(IQArray<Pauli> bases, IQArray<Qubit> qubits, Qubit aux)
@@ -400,45 +407,51 @@ namespace chp
                 throw new ExecutionFailException(msg);
             }
 
-
-            if (!bases.TryGetSingleZ(out var idx))
+            if (qubits.Length == 1)
             {
-                var aux = this.Simulator!.QubitManager?.Allocate();
-                if (aux == null) throw new NullReferenceException("Qubit manager was null.");
-                try
+                if (!bases.HasNonZ())
                 {
-                    WriteToScratch(bases, qubits, aux);
-                    AssertProb(
-                        new QArray<Pauli>(new[] { Pauli.PauliZ }), 
-                        new QArray<Qubit>(new[] { aux }), 
-                        probabilityOfZero,
-                        msg, 
-                        tol
-                    );
-                    WriteToScratch(
-                        new QArray<Pauli>(bases.Reverse()),
-                        new QArray<Qubit>(qubits.Reverse()),
-                        aux
-                    );
-                }
-                finally
-                {
-                    this.Simulator!.QubitManager?.Release(aux);
-                }
-            }
-            else
-            {
-                var isDeterministic = IsMeasurementDetermined(idx, out var result);
-                if (isDeterministic == shouldBeDeterministic) 
-                {
-                    if (!isDeterministic || expectedResult == result)
+                    var aux = this.Simulator!.QubitManager?.Allocate();
+                    if (aux == null) throw new NullReferenceException("Qubit manager was null.");
+                    try
                     {
-                        return;
+                        WriteToScratch(bases, qubits, aux);
+                        AssertProb(
+                            new QArray<Pauli>(new[] { Pauli.PauliZ }),
+                            new QArray<Qubit>(new[] { aux }),
+                            probabilityOfZero,
+                            msg,
+                            tol
+                        );
+                        WriteToScratch(
+                            new QArray<Pauli>(bases.Reverse()),
+                            new QArray<Qubit>(qubits.Reverse()),
+                            aux
+                        );
                     }
-                    throw new ExecutionFailException(msg);
+                    finally
+                    {
+                        this.Simulator!.QubitManager?.Release(aux);
+                    }
+                }
+                else
+                {
+                    int idx = qubits.First().Id;
+                    var isDeterministic = IsMeasurementDetermined(idx, out var result);
+                    if (isDeterministic == shouldBeDeterministic)
+                    {
+                        if (!isDeterministic || expectedResult == result)
+                        {
+                            return;
+                        }
+                        throw new ExecutionFailException(msg);
+                    }
                 }
             }
-            
+            else 
+            {
+                throw new NotImplementedException();
+            }
         }
         public override void ControlledExp(IQArray<Qubit> controls, IQArray<Pauli> paulis, double theta, IQArray<Qubit> qubits) => 
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");

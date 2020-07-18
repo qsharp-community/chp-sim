@@ -28,8 +28,8 @@
             let x = M(a);
             let y = M(b);
 
-            EqualityFactR(x,Zero, "Should be |0>");
-            EqualityFactR(y,One, "Should be |1>");
+            EqualityFactR(x,Zero, "Measurement should be |0>");
+            EqualityFactR(y,One, "Measurement should be |1>");
             AssertMeasurement([PauliZ], [a], Zero, "Should not be changed. Still be |0>");
             AssertMeasurement([PauliZ], [b], One, "Should be |1>");
             Reset(b);
@@ -46,8 +46,8 @@
             let x = M(a);
             let y = M(b);
 
-            EqualityFactR(x,One, "Should be |1>");
-            EqualityFactR(y,One, "Should be |1>");
+            EqualityFactR(x,One, "Measurement should be |1>");
+            EqualityFactR(y,One, "Measurement should be |1>");
             AssertMeasurement([PauliZ], [a], One, "Should be |1>");
             AssertMeasurement([PauliZ], [b], One, "Should be |1>");
             Reset(b);
