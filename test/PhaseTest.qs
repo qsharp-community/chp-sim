@@ -167,9 +167,7 @@
             H(right); //|+>
             S(right); //|i>
             S(right); //|->
-            DumpMachine();
             AssertMeasurement([PauliX], [right], One, "Should be |->");
-            DumpMachine();
             AssertMeasurementProbability([PauliX], [left], One, 0.5, "Should be untouched", 1e-5 );
             Reset(right);
         }

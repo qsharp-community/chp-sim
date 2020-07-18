@@ -15,72 +15,72 @@ namespace chp
 {
     public class StabilizerProcessor : QuantumProcessorBase
     {
-        private bool[,] Table;
-        private int NQubits;
+        private readonly bool[,] table;
+        private readonly int nQubits;
         internal StabilizerSimulator? Simulator;
 
         public StabilizerProcessor(int nQubits = 1024)
         {
-            NQubits = nQubits;
+            this.nQubits = nQubits;
             // By default, this array is full of false
-            Table = new bool[2 * NQubits, 2 * NQubits + 1];
-            Table.SetDiagonal(true);
+            table = new bool[2 * this.nQubits, 2 * this.nQubits + 1];
+            table.SetDiagonal(true);
         }
 
         //////////////////////////////////////////////////////////////////////
         // Internal
         //////////////////////////////////////////////////////////////////////
-        private int _x(int idxCol) => idxCol;
+        private int X(int idxCol) => idxCol;
 
-        private int _z(int idxCol) => NQubits + idxCol;
+        private int Z(int idxCol) => nQubits + idxCol;
 
-        private int _r => 2 * NQubits;
+        private int RIndex => 2 * nQubits;
 
         private void Hadamard(int target)
         {
             // This takes care of mapping X->Z and Z->X
-            Table.SwapColumns(_x(target), _z(target));
+            table.SwapColumns(X(target), Z(target));
 
             // Now need to handle the phase, this represents the fact that HYH = -Y
-            foreach (var idxRow in Enumerable.Range(0, Table.GetLength(0)))
+            foreach (var idxRow in Enumerable.Range(0, table.GetLength(0)))
             {
-                Table[idxRow, _r] ^= Table[idxRow, _x(target)] && Table[idxRow, _z(target)];
+                table[idxRow, RIndex] ^= table[idxRow, X(target)] && table[idxRow, Z(target)];
             }
         }
 
         private void Phase(int target) 
         {
             // Add global phase, this represents the fact that HYH = -Y
-            foreach (var idxRow in Enumerable.Range(0, Table.GetLength(0)))
+            foreach (var idxRow in Enumerable.Range(0, table.GetLength(0)))
             {
-                Table[idxRow, _r] ^= Table[idxRow, _x(target)] && Table[idxRow, _z(target)];
+                table[idxRow, RIndex] ^= table[idxRow, X(target)] && table[idxRow, Z(target)];
             }
 
             // 
-            foreach (var idxRow in Enumerable.Range(0, Table.GetLength(0)))
+            foreach (var idxRow in Enumerable.Range(0, table.GetLength(0)))
             {
-                Table[idxRow, _z(target)] ^= Table[idxRow, _x(target)];
+                table[idxRow, Z(target)] ^= table[idxRow, X(target)];
             }
 
         }
 
         private void Cnot(int control, int target)
         {
-            foreach (var idxRow in Enumerable.Range(0, Table.GetLength(0)))
+            foreach (var idxRow in Enumerable.Range(0, table.GetLength(0)))
             {
-                Table[idxRow, _r] ^= Table[idxRow, _x(control)] & 
-                    Table[idxRow, _z(target)] &
-                    (Table[idxRow, _x(target)] ^ Table[idxRow, _z(control)] ^ true);
+                table[idxRow, RIndex] ^= table[idxRow, X(control)] & 
+                    table[idxRow, Z(target)] &
+                    (table[idxRow, X(target)] ^ table[idxRow, Z(control)] ^ true);
             }
 
-            foreach (var idxRow in Enumerable.Range(0, Table.GetLength(0)))
+            foreach (var idxRow in Enumerable.Range(0, table.GetLength(0)))
             {
-                Table[idxRow, _x(target)] ^= Table[idxRow, _x(control)];
+                table[idxRow, X(target)] ^= table[idxRow, X(control)];
             }
 
-            foreach (var idxRow in Enumerable.Range(0, Table.GetLength(0)))
+            foreach (var idxRow in Enumerable.Range(0, table.GetLength(0)))
             {
-                Table[idxRow, _z(control)] ^= Table[idxRow, _z(target)];
+                table[idxRow, Z(control)] ^= table[idxRow, Z(target)];
             }
         }
 
@@ -94,21 +94,21 @@ namespace chp
             // Non-Deterministic Case
             else
             {
-                var collisions = Table.Column(idx).IndicesWhere(b => b).ToList();
-                var idxFirst = NQubits + Table.Column(idx).Skip(NQubits).IndicesWhere(b => b).First();
+                var collisions = table.Column(idx).IndicesWhere(b => b).ToList();
+                var idxFirst = nQubits + table.Column(idx).Skip(nQubits).IndicesWhere(b => b).First();
                 
                 foreach (var idxCollision in collisions.Where(idxCollision => idxCollision != idxFirst))
                 {
-                    Table.SetToRowSum(idxCollision, idxFirst);
+                    table.SetToRowSum(idxCollision, idxFirst);
                 }
 
-                foreach (var idxColumn in Enumerable.Range(0, Table.GetLength(1)))
+                foreach (var idxColumn in Enumerable.Range(0, table.GetLength(1)))
                 {
-                    Table[idxFirst - NQubits, idxColumn] = Table[idxFirst, idxColumn]; 
-                    Table[idxFirst, idxColumn] = false;              
+                    table[idxFirst - nQubits, idxColumn] = table[idxFirst, idxColumn]; 
+                    table[idxFirst, idxColumn] = false;              
                 }
-                Table[idxFirst, _z(idx)] = true;
-                Table[idxFirst, _r] = result == Result.One;
+                table[idxFirst, Z(idx)] = true;
+                table[idxFirst, RIndex] = result == Result.One;
                 return result;
             }
             
@@ -116,15 +116,15 @@ namespace chp
 
         private bool IsMeasurementDetermined(int idx, out Result result)
         {
-            var isDetermined = !Table.Column(idx).Skip(NQubits).Any(b => b);
+            var isDetermined = !table.Column(idx).Skip(nQubits).Any(b => b);
             if (isDetermined)
             {
-                var vector = new bool[2 * NQubits + 1];
-                foreach (var idxDestabilizer in Enumerable.Range(0, NQubits))
+                var vector = new bool[2 * nQubits + 1];
+                foreach (var idxDestabilizer in Enumerable.Range(0, nQubits))
                 {
-                    if (Table[idxDestabilizer, _x(idx)])
+                    if (table[idxDestabilizer, X(idx)])
                     {
-                        vector.SetToRowSum(Table, idxDestabilizer + NQubits);
+                        vector.SetToRowSum(table, idxDestabilizer + nQubits);
                     }                    
                 }
                 result = vector[^1] ? Result.One : Result.Zero;
@@ -173,11 +173,11 @@ namespace chp
         {
             if (location is QVoid)
             {
-                System.Console.WriteLine(Table.MatrixToString(true));
+                System.Console.WriteLine(table.MatrixToString(true));
             }
             else if (location is string filename)
             {
-                File.WriteAllText(filename, Table.MatrixToString(true));  
+                File.WriteAllText(filename, table.MatrixToString(true));  
             }
             else
             {
@@ -364,9 +364,9 @@ namespace chp
         private void Allocate(IQArray<Qubit> qubits)
         {
             allocated += qubits.Count;
-            if (allocated > NQubits)
+            if (allocated > nQubits)
             {
-                throw new UnsupportedOperationException($"Simulator supports a max of {NQubits} qubits. Total requested {allocated}");
+                throw new UnsupportedOperationException($"Simulator supports a max of {nQubits} qubits. Total requested {allocated}");
             }
         }
         private void DeAllocate(IQArray<Qubit> qubits)
@@ -379,7 +379,7 @@ namespace chp
             AssertProb(bases, qubits, result == Result.One ? 0 : 1, msg, 1e-10);
         public override void AssertProb(IQArray<Pauli> bases, IQArray<Qubit> qubits, double probabilityOfZero, string msg, double tol) 
         {
-            var shouldBeDeterministic = false;
+            bool shouldBeDeterministic;
             var expectedResult = Result.Zero;
             // Is the probability 0?
             if (Math.Abs(probabilityOfZero-0)<tol)
