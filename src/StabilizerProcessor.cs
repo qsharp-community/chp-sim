@@ -293,7 +293,6 @@ namespace chp
 
         public override void Z(Qubit qubit)
         {
-            Hadamard(qubit.Id);
             Phase(qubit.Id);
             Phase(qubit.Id);
         }
