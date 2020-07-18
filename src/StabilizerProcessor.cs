@@ -233,7 +233,7 @@ namespace chp
                         H(qubit);
                         S(qubit);
                         ControlledX(new QArray<Qubit>(new[] { qubit }), aux);
-                        S(qubit);
+                        SAdjoint(qubit);
                         H(qubit);
                         break;
 
