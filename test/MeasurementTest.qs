@@ -57,26 +57,14 @@
 
     @Test("chp.StabilizerSimulator")
     @Test("QuantumSimulator")
-    operation MeasureBellZStateTest() : Unit {
+    operation MeasureBellBothTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
-            StateOne(a);
-            StateOne(b);
-            let x = Measure([PauliZ,PauliZ],[a,b]);
-            EqualityFactR(x, Zero, "Measurement should be |11>");
-            Reset(a);
-            Reset(b);
-        }
-        Message("Test passed.");
-    }
+            H(a);
+            CNOT(a, b);
+            let x = Measure([PauliX, PauliX],[a, b]);
 
-    @Test("chp.StabilizerSimulator")
-    @Test("QuantumSimulator")
-    operation MeasureBellXStateTest() : Unit {
-        using ((a,b) = (Qubit(),Qubit())) {
-            StateI(a);
-            StateI(b);
-            let x = Measure([PauliZ,PauliZ],[a,b]);
-            EqualityFactR(x, Zero, "Measurement should be |11>");
+            EqualityFactR(x, Zero, "Measurements should be Zero");
+            
             Reset(a);
             Reset(b);
         }
