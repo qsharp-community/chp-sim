@@ -3,9 +3,13 @@
 #nullable enable
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.ExceptionServices;
+using Microsoft.Quantum.Bitwise;
+using Microsoft.Quantum.Intrinsic;
 using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.Simulation.Core;
 
@@ -196,29 +200,33 @@ namespace chp
 
         public override Result Measure(IQArray<Pauli> bases, IQArray<Qubit> qubits)
         {
-            if (qubits.Count == 1)
+            var result = Result.Zero;
+            foreach (var measure in bases.Zip(qubits, Tuple.Create))
             {
-                if (!bases.HasNonZ())
+                if (measure.Item1 == Pauli.PauliZ)
                 {
-                    // throw new UnsupportedOperationException("Not yet implemented.");
+                    result = result.XOr(MeasureByIndex(measure.Item2.Id));
+                }
+                else if (measure.Item1 == Pauli.PauliZ)
+                {
+                    //ignore
+                }
+                else
+                {
                     var aux = this.Simulator!.QubitManager?.Allocate();
-                    if (aux == null) throw new NullReferenceException("Qubit manager was null.");
+                    if (aux == null) throw new InvalidOperationException("Qubit manager was null.");
                     try
                     {
                         WriteToScratch(bases, qubits, aux);
-                        return MeasureByIndex(aux.Id);
+                        result = result.XOr(MeasureByIndex(aux.Id));
                     }
                     finally
                     {
                         this.Simulator!.QubitManager?.Release(aux);
                     }
                 }
-                return MeasureByIndex(qubits.First().Id);
             }
-            else 
-            {
-                throw new NotImplementedException();
-            }
+            return result;
         }
 
         private void WriteToScratch(IQArray<Pauli> bases, IQArray<Qubit> qubits, Qubit aux)
@@ -407,12 +415,24 @@ namespace chp
                 throw new ExecutionFailException(msg);
             }
 
-            if (qubits.Length == 1)
+            var isDeterministic = true;
+
+            var result = Result.Zero;
+            foreach (var measure in bases.Zip(qubits, Tuple.Create))
             {
-                if (!bases.HasNonZ())
+                if (measure.Item1 == Pauli.PauliZ)
+                {
+                    isDeterministic &= IsMeasurementDetermined(measure.Item2.Id, out var thisResult);
+                    result = result.XOr(thisResult);
+                }
+                else if (measure.Item1 == Pauli.PauliZ)
+                {
+                    //ignore
+                }
+                else
                 {
                     var aux = this.Simulator!.QubitManager?.Allocate();
-                    if (aux == null) throw new NullReferenceException("Qubit manager was null.");
+                    if (aux == null) throw new InvalidOperationException("Qubit manager was null.");
                     try
                     {
                         WriteToScratch(bases, qubits, aux);
@@ -433,24 +453,21 @@ namespace chp
                     {
                         this.Simulator!.QubitManager?.Release(aux);
                     }
-                }
-                else
-                {
-                    int idx = qubits.First().Id;
-                    var isDeterministic = IsMeasurementDetermined(idx, out var result);
-                    if (isDeterministic == shouldBeDeterministic)
-                    {
-                        if (!isDeterministic || expectedResult == result)
-                        {
-                            return;
-                        }
-                        throw new ExecutionFailException(msg);
-                    }
+
+                    //TODO: Also support Asset probability when using pauliZ or Y in mutliple Qubits scenario's.
+                    //hack, until I figure the rest out
+                    if (qubits.Length == 1) { return; }
+                    else throw new NotImplementedException();
                 }
             }
-            else 
+
+            if (isDeterministic == shouldBeDeterministic)
             {
-                throw new NotImplementedException();
+                if (!isDeterministic || expectedResult == result)
+                {
+                    return;
+                }
+                throw new ExecutionFailException(msg);
             }
         }
         public override void ControlledExp(IQArray<Qubit> controls, IQArray<Pauli> paulis, double theta, IQArray<Qubit> qubits) => 

@@ -135,15 +135,15 @@ namespace chp
             }
         }
 
-        internal static bool HasNonZ(this IEnumerable<Pauli> paulis)
+        internal static Result XOr(this Result l, Result r) 
         {
-            if (paulis.Any(basis => basis == Pauli.PauliI || basis == Pauli.PauliX || basis == Pauli.PauliY))
-            {
-                return false;
+            if (l == r) 
+            { 
+                return Result.Zero; 
             }
             else 
-            {
-                return true;
+            { 
+                return Result.One; 
             }
         }
     }
