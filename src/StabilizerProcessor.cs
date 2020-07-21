@@ -244,6 +244,7 @@ namespace chp
                         H(qubit);
                         break;
 
+                    // Pauli.PauliZ:
                     default:
                         ControlledX(new QArray<Qubit>(new[] { qubit }), aux);
                         break;

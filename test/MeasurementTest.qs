@@ -58,11 +58,11 @@
     @Test("chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation MeasureBellBothTest() : Unit {
-        using ((a,b) = (Qubit(),Qubit())) {
+        using ((a, b) = (Qubit(), Qubit())) {
             H(a);
             CNOT(a, b);
             let x = Measure([PauliX, PauliX],[a, b]);
-
+            //M(a) == Measure([PauliZ], [a])
             EqualityFactR(x, Zero, "Measurements should be Zero");
             
             Reset(a);
