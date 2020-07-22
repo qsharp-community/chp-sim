@@ -137,6 +137,57 @@ namespace chp
             return isDetermined;
         }
 
+        /// <summary>
+        /// Temporary check to give a more readable exception as long as there is no dynamic allocations.
+        /// </summary>
+        /// <param name="qubits">qubits to allocate</param>
+        public override void OnAllocateQubits(IQArray<Qubit> qubits)
+        {
+            Allocate(qubits);
+            base.OnAllocateQubits(qubits);
+        }
+        /// <summary>
+        /// Temporary check to give a more readable exception as long as there is no dynamic allocations.
+        /// </summary>
+        /// <param name="qubits">qubits to allocate</param>
+        public override void OnBorrowQubits(IQArray<Qubit> qubits, long allocatedForBorrowingCount)
+        {
+            Allocate(qubits);
+            base.OnBorrowQubits(qubits, allocatedForBorrowingCount);
+        }
+        /// <summary>
+        /// Temporary check to give a more readable exception as long as there is no dynamic allocations.
+        /// </summary>
+        /// <param name="qubits">qubits to deallocate</param>
+        public override void OnReleaseQubits(IQArray<Qubit> qubits)
+        {
+            DeAllocate(qubits);
+            base.OnReleaseQubits(qubits);
+        }
+        /// <summary>
+        /// Temporary check to give a more readable exception as long as there is no dynamic allocations.
+        /// </summary>
+        /// <param name="qubits">qubits to deallocate</param>
+        public override void OnReturnQubits(IQArray<Qubit> qubits, long releasedOnReturnCount)
+        {
+            DeAllocate(qubits);
+            base.OnReturnQubits(qubits, releasedOnReturnCount);
+        }
+
+        private void Allocate(IQArray<Qubit> qubits)
+        {
+            allocated += qubits.Count;
+            if (allocated > nQubits)
+            {
+                throw new UnsupportedOperationException($"Simulator supports a max of {nQubits} qubits. Total requested {allocated}");
+            }
+        }
+        private void DeAllocate(IQArray<Qubit> qubits)
+        {
+            allocated -= qubits.Count;
+        }
+        private int allocated = 0;
+    
         //////////////////////////////////////////////////////////////////////
         // Overrides - Supported
         //////////////////////////////////////////////////////////////////////
@@ -191,71 +242,6 @@ namespace chp
             OnMessage("Only DumpMachine is supported in this simulator.");
         }
 
-        public override Result M(Qubit qubit) => MeasureByIndex(qubit.Id);
-
-
-        public override Result Measure(IQArray<Pauli> bases, IQArray<Qubit> qubits)
-        {
-            if (qubits.Count == 1)
-            {
-                if (!bases.HasNonZ())
-                {
-                    // throw new UnsupportedOperationException("Not yet implemented.");
-                    var aux = this.Simulator!.QubitManager?.Allocate();
-                    if (aux == null) throw new NullReferenceException("Qubit manager was null.");
-                    try
-                    {
-                        WriteToScratch(bases, qubits, aux);
-                        return MeasureByIndex(aux.Id);
-                    }
-                    finally
-                    {
-                        this.Simulator!.QubitManager?.Release(aux);
-                    }
-                }
-                return MeasureByIndex(qubits.First().Id);
-            }
-            else 
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        private void WriteToScratch(IQArray<Pauli> bases, IQArray<Qubit> qubits, Qubit aux)
-        {
-            foreach (var (pauli, qubit) in Enumerable.Zip(bases, qubits, (pauli, qubit) => (pauli, qubit)))
-            {
-                switch (pauli)
-                {
-                    case Pauli.PauliI:
-                        break;
-
-                    case Pauli.PauliX:
-                        H(qubit);
-                        ControlledX(new QArray<Qubit>(new[] { qubit }), aux);
-                        H(qubit);
-                        break;
-
-                    case Pauli.PauliY:
-                        H(qubit);
-                        S(qubit);
-                        ControlledX(new QArray<Qubit>(new[] { qubit }), aux);
-                        SAdjoint(qubit);
-                        H(qubit);
-                        break;
-
-                    // Pauli.PauliZ:
-                    default:
-                        ControlledX(new QArray<Qubit>(new[] { qubit }), aux);
-                        break;
-                }
-            }
-        }
-
-        public override void Reset(Qubit qubit) {
-            if (M(qubit) == Result.One) { X(qubit); }
-        }
-        
         public override void X(Qubit qubit)
         {
             Hadamard(qubit.Id);
@@ -327,61 +313,6 @@ namespace chp
             Cnot(qubit1.Id, qubit2.Id);
         }
 
-        //////////////////////////////////////////////////////////////////////
-        // Overrides - Unsupported
-        //////////////////////////////////////////////////////////////////////
-
-        /// <summary>
-        /// Temporary check to give a more readable exception as long as there is no dynamic allocations.
-        /// </summary>
-        /// <param name="qubits">qubits to allocate</param>
-        public override void OnAllocateQubits(IQArray<Qubit> qubits)
-        {
-            Allocate(qubits);
-            base.OnAllocateQubits(qubits);
-        }
-        /// <summary>
-        /// Temporary check to give a more readable exception as long as there is no dynamic allocations.
-        /// </summary>
-        /// <param name="qubits">qubits to allocate</param>
-        public override void OnBorrowQubits(IQArray<Qubit> qubits, long allocatedForBorrowingCount)
-        {
-            Allocate(qubits);
-            base.OnBorrowQubits(qubits, allocatedForBorrowingCount);
-        }
-        /// <summary>
-        /// Temporary check to give a more readable exception as long as there is no dynamic allocations.
-        /// </summary>
-        /// <param name="qubits">qubits to deallocate</param>
-        public override void OnReleaseQubits(IQArray<Qubit> qubits)
-        {
-            DeAllocate(qubits);
-            base.OnReleaseQubits(qubits);
-        }
-        /// <summary>
-        /// Temporary check to give a more readable exception as long as there is no dynamic allocations.
-        /// </summary>
-        /// <param name="qubits">qubits to deallocate</param>
-        public override void OnReturnQubits(IQArray<Qubit> qubits, long releasedOnReturnCount)
-        {
-            DeAllocate(qubits);
-            base.OnReturnQubits(qubits, releasedOnReturnCount);
-        }
-
-        private void Allocate(IQArray<Qubit> qubits)
-        {
-            allocated += qubits.Count;
-            if (allocated > nQubits)
-            {
-                throw new UnsupportedOperationException($"Simulator supports a max of {nQubits} qubits. Total requested {allocated}");
-            }
-        }
-        private void DeAllocate(IQArray<Qubit> qubits)
-        {
-            allocated -= qubits.Count;
-        }
-        private int allocated = 0;
-
         public override void Assert(IQArray<Pauli> bases, IQArray<Qubit> qubits, Result result, string msg) =>
             AssertProb(bases, qubits, result == Result.One ? 0 : 1, msg, 1e-10);
         public override void AssertProb(IQArray<Pauli> bases, IQArray<Qubit> qubits, double probabilityOfZero, string msg, double tol) 
@@ -408,52 +339,105 @@ namespace chp
                 throw new ExecutionFailException(msg);
             }
 
-            if (qubits.Length == 1)
+            if (!bases.TryGetSingleZ(out var idx))
             {
-                if (!bases.HasNonZ())
+                var aux = this.Simulator!.QubitManager?.Allocate();
+                if (aux == null) throw new NullReferenceException("Qubit manager was null.");
+                try
                 {
-                    var aux = this.Simulator!.QubitManager?.Allocate();
-                    if (aux == null) throw new NullReferenceException("Qubit manager was null.");
-                    try
-                    {
-                        WriteToScratch(bases, qubits, aux);
-                        AssertProb(
-                            new QArray<Pauli>(new[] { Pauli.PauliZ }),
-                            new QArray<Qubit>(new[] { aux }),
-                            probabilityOfZero,
-                            msg,
-                            tol
-                        );
-                        WriteToScratch(
-                            new QArray<Pauli>(bases.Reverse()),
-                            new QArray<Qubit>(qubits.Reverse()),
-                            aux
-                        );
-                    }
-                    finally
-                    {
-                        this.Simulator!.QubitManager?.Release(aux);
-                    }
+                    WriteToScratch(bases, qubits, aux);
+                    AssertProb(
+                        new QArray<Pauli>(new[] { Pauli.PauliZ }), 
+                        new QArray<Qubit>(new[] { aux }), 
+                        probabilityOfZero,
+                        msg, 
+                        tol
+                    );
+                    WriteToScratch(
+                        new QArray<Pauli>(bases.Reverse()),
+                        new QArray<Qubit>(qubits.Reverse()),
+                        aux
+                    );
                 }
-                else
+                finally
                 {
-                    int idx = qubits.First().Id;
-                    var isDeterministic = IsMeasurementDetermined(idx, out var result);
-                    if (isDeterministic == shouldBeDeterministic)
-                    {
-                        if (!isDeterministic || expectedResult == result)
-                        {
-                            return;
-                        }
-                        throw new ExecutionFailException(msg);
-                    }
+                    this.Simulator!.QubitManager?.Release(aux);
                 }
             }
-            else 
+            else
             {
-                throw new NotImplementedException();
+                var isDeterministic = IsMeasurementDetermined(idx, out var result);
+                if (isDeterministic == shouldBeDeterministic) 
+                {
+                    if (!isDeterministic || expectedResult == result)
+                    {
+                        return;
+                    }
+                    throw new ExecutionFailException(msg);
+                }
             }
         }
+
+        public override Result M(Qubit qubit) => MeasureByIndex(qubit.Id);
+
+        public override Result Measure(IQArray<Pauli> bases, IQArray<Qubit> qubits)
+        {
+            if (!bases.TryGetSingleZ(out var idx))
+            {
+                // throw new UnsupportedOperationException("Not yet implemented.");
+                var aux = this.Simulator!.QubitManager?.Allocate();
+                if (aux == null) throw new NullReferenceException("Qubit manager was null.");
+                try
+                {
+                    WriteToScratch(bases, qubits, aux);
+                    return MeasureByIndex(aux.Id);
+                }
+                finally
+                {
+                    this.Simulator!.QubitManager?.Release(aux);
+                }
+            }
+            return MeasureByIndex(idx);
+        }
+
+        private void WriteToScratch(IQArray<Pauli> bases, IQArray<Qubit> qubits, Qubit aux)
+        {
+            foreach (var (pauli, qubit) in Enumerable.Zip(bases, qubits, (pauli, qubit) => (pauli, qubit)))
+            {
+                switch (pauli)
+                {
+                    case Pauli.PauliI:
+                        break;
+
+                    case Pauli.PauliX:
+                        H(qubit);
+                        ControlledX(new QArray<Qubit>(new[] { qubit }), aux);
+                        H(qubit);
+                        break;
+
+                    case Pauli.PauliY:
+                        H(qubit);
+                        S(qubit);
+                        ControlledX(new QArray<Qubit>(new[] { qubit }), aux);
+                        SAdjoint(qubit);
+                        H(qubit);
+                        break;
+
+                    // Pauli.PauliZ:
+                    default:
+                        ControlledX(new QArray<Qubit>(new[] { qubit }), aux);
+                        break;
+                }
+            }
+        }
+
+        public override void Reset(Qubit qubit) {
+            if (M(qubit) == Result.One) { X(qubit); }
+        }
+
+        //////////////////////////////////////////////////////////////////////
+        // Overrides - Unsupported
+        //////////////////////////////////////////////////////////////////////
         public override void ControlledExp(IQArray<Qubit> controls, IQArray<Pauli> paulis, double theta, IQArray<Qubit> qubits) => 
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
             
