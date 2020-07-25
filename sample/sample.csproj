@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <DefaultSimulator>chp.StabilizerSimulator</DefaultSimulator>
+    <DefaultSimulator>QSharpCommunity.Simulators.Chp.StabilizerSimulator</DefaultSimulator>
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
