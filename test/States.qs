@@ -36,7 +36,7 @@
         H(q); //|1>
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation StatePlusXTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -48,7 +48,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation StatePlusYTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -60,7 +60,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation StatePlusZTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -72,7 +72,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation StateMinusXTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -84,7 +84,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation StateMinusYTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -96,7 +96,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation StateMinusZTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -108,7 +108,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation StateIXTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -120,7 +120,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation StateIYTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -132,7 +132,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation StateIZTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -144,7 +144,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation StateMinusIXTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -156,7 +156,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation StateMinusIYTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -168,7 +168,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation StateMinusIZTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -180,7 +180,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation StateOneXTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -192,7 +192,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation StateOneYTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -204,7 +204,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation StateOneZTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {

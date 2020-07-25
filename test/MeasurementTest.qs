@@ -3,7 +3,7 @@
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
     
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation MeasureZeroTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -20,7 +20,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation MeasureOneTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -37,7 +37,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation MeasureOneBothTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -55,7 +55,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation MeasureBellBothTest() : Unit {
         using ((a, b) = (Qubit(), Qubit())) {

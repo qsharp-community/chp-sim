@@ -3,7 +3,7 @@
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation MeasurementAndMessageTest() : Unit {
         using (q = Qubit()) {

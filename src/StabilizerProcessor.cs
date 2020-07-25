@@ -1,4 +1,4 @@
-﻿// Copyright (c) Sarah Kaiser. All rights reserved.
+// Copyright (c) Sarah Kaiser. All rights reserved.
 // Licensed under the MIT License.
 #nullable enable
 
@@ -11,7 +11,7 @@ using Microsoft.Quantum.Simulation.Core;
 
 // This C# project is based on a Python implementation by @Strilanc here: 
 // https://github.com/Strilanc/python-chp-stabilizer-simulator
-namespace chp
+namespace QSharpCommunity.Simulators.Chp
 {
     public class StabilizerProcessor : QuantumProcessorBase
     {

@@ -8,7 +8,7 @@ using Microsoft.Quantum.Simulation.Core;
 
 // This C# project is based on a Python implementation by @Strilanc here: 
 // https://github.com/Strilanc/python-chp-stabilizer-simulator
-namespace chp
+namespace QSharpCommunity.Simulators.Chp
 {
 
     internal static class Extensions 

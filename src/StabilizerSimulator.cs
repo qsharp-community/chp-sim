@@ -5,9 +5,7 @@ using System;
 using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.Simulation.QuantumProcessor;
 
-// This C# project is based on a Python implementation by @Strilanc here: 
-// https://github.com/Strilanc/python-chp-stabilizer-simulator
-namespace chp
+namespace QSharpCommunity.Simulators.Chp
 {
     public class StabilizerSimulator : QuantumProcessorDispatcher
     {

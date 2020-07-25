@@ -3,7 +3,7 @@
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
     
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation ZRotateHXQubit () : Unit {
         using (q = Qubit()) {
@@ -15,7 +15,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation ZRotateHYQubit () : Unit {
         using (q = Qubit()) {
@@ -27,7 +27,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation ZRotateHZQubit () : Unit {
         using (q = Qubit()) {
@@ -39,7 +39,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation ZRotateXQubit () : Unit {
         using (q = Qubit()) {
@@ -50,7 +50,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation ZRotateYQubit () : Unit {
         using (q = Qubit()) {
@@ -61,7 +61,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation ZRotateZQubit () : Unit {
         using (q = Qubit()) {
