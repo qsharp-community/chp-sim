@@ -34,13 +34,13 @@ namespace QSharpCommunity.Simulators.Chp
             "chp",
             new Documentation
             {
-                Summary = "Runs a given function or operation on the ToffoliSimulator target machine.",
+                Summary = "Runs a given function or operation on the StabilizerSimulator target machine.",
                 Description = @"
-                    This magic command allows executing a given function or operation on the ToffoliSimulator, 
-                    which performs a simulation of the given function or operation in which the state is always
-                    a simple product state in the computational basis, and prints the resulting return value.
+                    This magic command allows executing a given function or operation on the StabilizerSimulator, 
+                    which performs a simulation of the given function or operation in which the state can always be 
+                    represented by a stabilizer of the form described by CHP, and prints the resulting return value.
 
-                    See the [ToffoliSimulator user guide](https://docs.microsoft.com/quantum/user-guide/machines/toffoli-simulator) to learn more.
+                    See the [StabilizerSimulator user guide](https://github.com/qsharp-community/chp-sim/docs/user-guide.md) to learn more.
 
                     #### Required parameters
 
@@ -51,18 +51,18 @@ namespace QSharpCommunity.Simulators.Chp
                 Examples = new[]
                 {
                     @"
-                        Use the ToffoliSimulator to simulate a Q# operation
+                        Use the StabilizerSimulator to simulate a Q# operation
                         defined as `operation MyOperation() : Result`:
                         ```
-                        In []: %toffoli MyOperation
+                        In []: %chp MyOperation
                         Out[]: <return value of the operation>
                         ```
                     ",
                     @"
-                        Use the ToffoliSimulator to simulate a Q# operation
+                        Use the StabilizerSimulator to simulate a Q# operation
                         defined as `operation MyOperation(a : Int, b : Int) : Result`:
                         ```
-                        In []: %toffoli MyOperation a=5 b=10
+                        In []: %chp MyOperation a=5 b=10
                         Out[]: <return value of the operation>
                         ```
                     ",
