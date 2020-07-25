@@ -10,4 +10,15 @@
     <PackageReference Include="Microsoft.Quantum.IQSharp.Jupyter" Version="0.12.20072031" />
   </ItemGroup>
 
+  <!--For more info on the package properties check out https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#nuget-metadata-properties -->
+  <PropertyGroup>
+    <PackageId>QSharpCommunity.Simulators.Chp</PackageId>
+    <Description>Quantum simulator for Q# that uses the CHP classical subtheory of quantum.</Description>
+    <Copyright>2020 QSharpCommunity</Copyright>
+    <PackageLicenceExpression>MIT</PackageLicenceExpression>
+    <RepositoryUrl>https://github.com/qsharp-community/chp-sim.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+
 </Project>
