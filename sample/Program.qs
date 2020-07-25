@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Sarah Kaiser. All rights reserved.
 // Licensed under the MIT License.
 
-namespace sample {
+namespace QSharpCommunity.Simulators.Chp.Sample {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Intrinsic;
     open Microsoft.Quantum.Diagnostics;
