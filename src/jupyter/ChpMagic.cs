@@ -1,6 +1,5 @@
 // <copyright file="ChpMagic.cs" company="https://qsharp.community/">
-// Copyright (c) Sarah Kaiser. All rights reserved.
-// Licensed under the MIT License.
+// Copyright (c) Sarah Kaiser. Licensed under the MIT License.
 // </copyright>
 // Adapted from Toffoli magic command in the IQSharp project here:
 // https://github.com/microsoft/iqsharp/blob/master/src/Kernel/Magic/ToffoliMagic.cs

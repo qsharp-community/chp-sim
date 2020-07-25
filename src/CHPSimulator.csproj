@@ -6,6 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Quantum.Simulators" Version="0.12.20072031" />
     <PackageReference Include="Microsoft.Quantum.IQSharp.Jupyter" Version="0.12.20072031" />
   </ItemGroup>
@@ -19,6 +27,7 @@
     <PackageLicenceExpression>MIT</PackageLicenceExpression>
     <RepositoryUrl>https://github.com/qsharp-community/chp-sim.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <DocumentationFile>CHPSimulator.xml</DocumentationFile>
   </PropertyGroup>
 
 

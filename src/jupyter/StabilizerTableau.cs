@@ -1,5 +1,5 @@
 ﻿// <copyright file="StabilizerTableau.cs" company="https://qsharp.community/">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// Copyright (c) Sarah Kaiser. Licensed under the MIT License.
 // </copyright>
 // Adapted from State display encoders in the IQSharp project here:
 // https://github.com/microsoft/iqsharp/blob/master/src/Jupyter/Visualization/StateDisplayEncoders.cs

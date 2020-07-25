@@ -1,6 +1,5 @@
 ﻿// <copyright file="StabilizerProcessor.cs" company="https://qsharp.community/">
-// Copyright (c) Sarah Kaiser. All rights reserved.
-// Licensed under the MIT License.
+// Copyright (c) Sarah Kaiser. Licensed under the MIT License.
 // </copyright>
 #nullable enable
 
@@ -322,6 +321,7 @@ namespace QSharpCommunity.Simulators.Chp
             }
         }
 
+        /// <inheritdoc/>
         public override Result M(Qubit qubit) => this.MeasureByIndex(qubit.Id);
 
         /// <inheritdoc/>

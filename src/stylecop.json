@@ -9,7 +9,7 @@
   "settings": {
     "documentationRules": {
       "companyName": "https://qsharp.community/",
-      "copyrightText": "Copyright (c) Sarah Kaiser. All rights reserved."
+      "copyrightText": "Copyright (c) Sarah Kaiser. Licensed under the MIT License."
     }
   }
 }

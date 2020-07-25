@@ -1,5 +1,5 @@
-// <copyright file="DebugMessage.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="DebugMessage.cs" company="https://qsharp.community/">
+// Copyright (c) Sarah Kaiser. Licensed under the MIT License.
 // </copyright>
 #nullable enable
 
