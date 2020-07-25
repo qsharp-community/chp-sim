@@ -3,8 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
-    <!-- -->
-    <NoWarn>SA1101</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +14,8 @@
   <PropertyGroup>
     <PackageId>QSharpCommunity.Simulators.Chp</PackageId>
     <Description>Quantum simulator for Q# that uses the CHP classical subtheory of quantum.</Description>
-    <Copyright>2020 QSharpCommunity</Copyright>
+    <Company>https://qsharp.community/</Company>
+    <Copyright>Copyright (c) Sarah Kaiser. All rights reserved. Licensed under the MIT License.</Copyright>
     <PackageLicenceExpression>MIT</PackageLicenceExpression>
     <RepositoryUrl>https://github.com/qsharp-community/chp-sim.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

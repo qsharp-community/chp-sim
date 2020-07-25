@@ -1,12 +1,18 @@
-// Copyright (c) Sarah Kaiser. All rights reserved.
-// Licensed under the MIT License.
-
+// <copyright file="DebugMessage.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 #nullable enable
 
 namespace QSharpCommunity.Simulators.Chp
 {
+    /// <summary>
+    /// Message to show in debugging.
+    /// </summary>
     internal class DebugMessage
     {
-        public string Message { get; set; }
+        /// <summary>
+        /// Gets or sets the message to show for debugging.
+        /// </summary>
+        public string? Message { get; set; }
     }
 }

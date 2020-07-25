@@ -1,17 +1,20 @@
+// <copyright file="StabilizerSimulator.cs" company="https://qsharp.community/">
 // Copyright (c) Sarah Kaiser. All rights reserved.
 // Licensed under the MIT License.
-// This C# project is based on a Python implementation by @Strilanc here: 
+// </copyright>
+// This C# project is based on a Python implementation by @Strilanc here:
 // https://github.com/Strilanc/python-chp-stabilizer-simulator
-
-using System;
-using Microsoft.Quantum.Simulation.Common;
-using Microsoft.Quantum.Simulation.QuantumProcessor;
 
 namespace QSharpCommunity.Simulators.Chp
 {
+    using System;
+    using Microsoft.Quantum.Simulation.Common;
+    using Microsoft.Quantum.Simulation.QuantumProcessor;
+
     public class StabilizerSimulator : QuantumProcessorDispatcher
     {
-        public StabilizerSimulator(int? nQubits = null) : base(new StabilizerProcessor(nQubits))
+        public StabilizerSimulator(int? nQubits = null)
+            : base(new StabilizerProcessor(nQubits))
         {
             (this.QuantumProcessor as StabilizerProcessor).Simulator = this;
         }

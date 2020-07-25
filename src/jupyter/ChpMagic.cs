@@ -1,18 +1,20 @@
+// <copyright file="ChpMagic.cs" company="https://qsharp.community/">
 // Copyright (c) Sarah Kaiser. All rights reserved.
 // Licensed under the MIT License.
-// Adapted from Toffoli magic command in the IQSharp project here: 
+// </copyright>
+// Adapted from Toffoli magic command in the IQSharp project here:
 // https://github.com/microsoft/iqsharp/blob/master/src/Kernel/Magic/ToffoliMagic.cs
-
-using System;
-using System.Threading.Tasks;
-using Microsoft.Jupyter.Core;
-using Microsoft.Quantum.IQSharp;
-using Microsoft.Quantum.IQSharp.Common;
-using Microsoft.Quantum.IQSharp.Jupyter;
-using Microsoft.Quantum.Simulation.Simulators;
 
 namespace QSharpCommunity.Simulators.Chp
 {
+    using System;
+    using System.Threading.Tasks;
+    using Microsoft.Jupyter.Core;
+    using Microsoft.Quantum.IQSharp;
+    using Microsoft.Quantum.IQSharp.Common;
+    using Microsoft.Quantum.IQSharp.Jupyter;
+    using Microsoft.Quantum.Simulation.Simulators;
+
     /// <summary>
     /// Runs a given function or operation on the ChpSimulator target machine.
     /// </summary>
@@ -20,12 +22,16 @@ namespace QSharpCommunity.Simulators.Chp
     {
         private const string ParameterNameOperationName = "__operationName__";
         private const int DefaultNQubits = 1024;
-        private IConfigurationSource configurationSource;
+        private readonly IConfigurationSource configurationSource;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ChpMagic"/> class.
         /// Default constructor.
         /// </summary>
-        public ChpMagic(ISymbolResolver resolver, IConfigurationSource configurationSource) : base(
+        /// <param name="resolver">Symbol resolver.</param>
+        /// <param name="configurationSource">Source for confirgarion settings.</param>
+        public ChpMagic(ISymbolResolver resolver, IConfigurationSource configurationSource)
+            : base(
             "chp",
             new Documentation
             {
@@ -43,7 +49,7 @@ namespace QSharpCommunity.Simulators.Chp
                     or function name that has been defined either in the notebook or in a Q# file in the same folder.
                     - Arguments for the Q# operation or function must also be specified as `key=value` pairs.
                 ",
-                Examples = new []
+                Examples = new[]
                 {
                     @"
                         Use the ToffoliSimulator to simulate a Q# operation
@@ -61,7 +67,7 @@ namespace QSharpCommunity.Simulators.Chp
                         Out[]: <return value of the operation>
                         ```
                     ",
-                }
+                },
             })
         {
             this.SymbolResolver = resolver;
@@ -69,37 +75,41 @@ namespace QSharpCommunity.Simulators.Chp
         }
 
         /// <summary>
-        /// ISumbolResolver used to find the function/operation to simulate.
+        /// Gets the ISumbolResolver used to find the function/operation to simulate.
         /// </summary>
         public ISymbolResolver SymbolResolver { get; }
 
         /// <inheritdoc />
         public override ExecutionResult Run(string input, IChannel channel) =>
-            RunAsync(input, channel).Result;
+            this.RunAsync(input, channel).Result;
 
         /// <summary>
         /// Simulates a function/operation using the ChpSimulator as target machine.
         /// It expects a single input: the name of the function/operation to simulate.
         /// </summary>
+        /// <param name="input">current parameters for the fuinction.</param>
+        /// <param name="channel">channal connecting up with jupiter.</param>
+        /// <returns>funtion result.</returns>
         public async Task<ExecutionResult> RunAsync(string input, IChannel channel)
         {
             var inputParameters = ParseInputParameters(input, firstParameterInferredName: ParameterNameOperationName);
 
             var name = inputParameters.DecodeParameter<string>(ParameterNameOperationName);
-            var symbol = SymbolResolver.Resolve(name) as dynamic; // FIXME: should be as IQSharpSymbol.
-            if (symbol == null) throw new InvalidOperationException($"Invalid operation name: {name}");
+            var symbol = this.SymbolResolver.Resolve(name) as dynamic; // FIXME: should be as IQSharpSymbol.
+            if (symbol == null)
+            {
+                throw new InvalidOperationException($"Invalid operation name: {name}");
+            }
 
-            //TODO: File bug for the following to be public:
+            // TODO: File bug for the following to be public:
             // https://github.com/microsoft/iqsharp/blob/9fa7d4da4ec0401bf5803e40fce5b37e716c3574/src/Jupyter/ConfigurationSource.cs#L35
             var nQubits =
-                configurationSource.Configuration.TryGetValue("chp.nQubits", out var token)
+                this.configurationSource.Configuration.TryGetValue("chp.nQubits", out var token)
                 ? token.ToObject<int>()
                 : DefaultNQubits;
 
             var debug =
-                configurationSource.Configuration.TryGetValue("chp.debug", out var tokenDebug)
-                ? tokenDebug.ToObject<bool>()
-                : false;
+                this.configurationSource.Configuration.TryGetValue("chp.debug", out var tokenDebug) && tokenDebug.ToObject<bool>();
 
             var qsim = new StabilizerSimulator(nQubits).WithStackTraceDisplay(channel);
             qsim.DisableLogToConsole();
@@ -119,7 +129,7 @@ namespace QSharpCommunity.Simulators.Chp
             };
             qsim.OnLog += channel.Stdout;
 
-            var operationInfo = ((OperationInfo)symbol.Operation);
+            var operationInfo = (OperationInfo)symbol.Operation;
             var value = await operationInfo.RunAsync(qsim, inputParameters);
 
             return value.ToExecutionResult();

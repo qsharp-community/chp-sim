@@ -1,53 +1,40 @@
+// <copyright file="TableauToHtmlEncoder.cs" company="https://qsharp.community/">
 // Copyright (c) Sarah Kaiser. All rights reserved.
 // Licensed under the MIT License.
-// Adapted from State display encoders in the IQSharp project here: 
+// </copyright>
+// Adapted from State display encoders in the IQSharp project here:
 // https://github.com/microsoft/iqsharp/blob/master/src/Jupyter/Visualization/StateDisplayEncoders.cs
 #nullable enable
 
-using System;
-using Microsoft.Jupyter.Core;
-using Microsoft.Quantum.IQSharp.Jupyter;
-
 namespace QSharpCommunity.Simulators.Chp
 {
-    public class StabilizerTableau
-    {
-        public bool[,] Data { get; set; }
-    }
+    using System;
+    using Microsoft.Jupyter.Core;
+    using Microsoft.Quantum.IQSharp.Jupyter;
 
-    public class TableauToTextEncoder : IResultEncoder
-    {
-        public string MimeType => MimeTypes.PlainText;
-
-        public EncodedData? Encode(object displayable)
-        {
-            if (displayable is StabilizerTableau tableau)
-            {
-                return tableau.Data.MatrixToString(true).ToEncodedData();
-            }
-            else return null;
-        }
-    }
-
+    /// <summary>
+    /// Tableau visualizer for jupiter.
+    /// </summary>
     public class TableauToHtmlEncoder : IResultEncoder
     {
-        public string MimeType => MimeTypes.Html;
-        private IConfigurationSource configurationSource;
+        private readonly IConfigurationSource configurationSource;
+
         public TableauToHtmlEncoder(IConfigurationSource configurationSource)
         {
             this.configurationSource = configurationSource;
         }
+
+        public string MimeType => MimeTypes.Html;
+
         public EncodedData? Encode(object displayable)
         {
             if (displayable is StabilizerTableau tableau)
             {
                 var showDestabilizers =
-                    configurationSource.Configuration.TryGetValue("chp.showDestabilizers", out var token)
-                    ? token.ToObject<bool>()
-                    : false;
+                    this.configurationSource.Configuration.TryGetValue("chp.showDestabilizers", out var token) && token.ToObject<bool>();
 
                 var nQubits = tableau.Data.GetLength(0) / 2;
-                var tableFormat = new String('c', nQubits);
+                var tableFormat = new string('c', nQubits);
                 var tableRows = tableau.Data.MatrixToLatexString(showDestabilizers);
 
                 var outputTable = $@"
@@ -57,7 +44,10 @@ namespace QSharpCommunity.Simulators.Chp
 
                 return outputTable.ToEncodedData();
             }
-            else return null;
+            else
+            {
+                return null;
+            }
         }
     }
 }

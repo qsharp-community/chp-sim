@@ -1,16 +1,20 @@
+// <copyright file="Extensions.cs" company="https://qsharp.community/">
 // Copyright (c) Sarah Kaiser. All rights reserved.
 // Licensed under the MIT License.
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Quantum.Simulation.Core;
+// </copyright>
 
 // This C# project is based on a Python implementation by @Strilanc here:
 // https://github.com/Strilanc/python-chp-stabilizer-simulator
 namespace QSharpCommunity.Simulators.Chp
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Microsoft.Quantum.Simulation.Core;
 
+    /// <summary>
+    /// Extension methods for the simulators.
+    /// </summary>
     internal static class Extensions
     {
         internal static void SetDiagonal<T>(this T[,] matrix, T value)
@@ -51,20 +55,20 @@ namespace QSharpCommunity.Simulators.Chp
         internal static string RowToString(this bool[] vector)
         {
             var (xs, zs, r) = vector.SplitRow();
-            return (r ? "-" : "+") + string.Join("",
+            return (r ? "-" : "+") + string.Join(
+                string.Empty,
                 Enumerable.Zip(xs, zs, (x, z) =>
                     (x, z) switch
                     {
                         (false, false) => "I",
                         (true, false) => "X",
                         (false, true) => "Z",
-                        (true, true) => "Y"
-                    }
-                )
-            );
+                        (true, true) => "Y",
+                    }));
         }
 
         internal static string RowToString(this bool[,] matrix, int idx) => matrix.Row(idx).ToArray().RowToString();
+
         internal static string RowToLatex(this bool[,] matrix, int idx) =>
             string.Join(" & ", matrix.Row(idx).ToArray().Select(val => val ? 1 : 0));
 
@@ -78,14 +82,11 @@ namespace QSharpCommunity.Simulators.Chp
             (
                 showDestabilizers
                 ? string.Join(
-                    @" \\", Enumerable.Range(0, matrix.GetLength(0) / 2).Select(idx => matrix.RowToLatex(idx))
-                ) + @" \\ \hline"
-                : ""
-            ) +
+                    @" \\", Enumerable.Range(0, matrix.GetLength(0) / 2).Select(idx => matrix.RowToLatex(idx))) + @" \\ \hline"
+                : string.Empty) +
             string.Join(@" \\", Enumerable.Range(matrix.GetLength(0) / 2, matrix.GetLength(0) / 2).Select(idx => matrix.RowToLatex(idx)));
 
-
-        internal static (bool[], bool[], bool) SplitRow(this IEnumerable<bool> row)
+        internal static (bool[] Stabilzers, bool[] DeStabilzers, bool Phase) SplitRow(this IEnumerable<bool> row)
         {
             var vector = row.ToArray();
             var nQubits = (vector.Length - 1) / 2;
@@ -94,15 +95,14 @@ namespace QSharpCommunity.Simulators.Chp
 
         internal static bool PhaseProduct(this IEnumerable<bool> row1, IEnumerable<bool> row2)
         {
-            int g(bool x1, bool z1, bool x2, bool z2) =>
+            static int G(bool x1, bool z1, bool x2, bool z2) =>
                 (x1, z1) switch
                 {
                     (false, false) => 0,
                     (true, true) => (z2 ? 1 : 0) - (x2 ? 1 : 0),
-                    (true, false) => (z2 ? 1 : 0) * (2 * (x2 ? 1 : 0) - 1),
-                    (false, true) =>(x2 ? 1 : 0) * (2 * (z2 ? 1 : 0) - 1)
+                    (true, false) => (z2 ? 1 : 0) * ((2 * (x2 ? 1 : 0)) - 1),
+                    (false, true) => (x2 ? 1 : 0) * ((2 * (z2 ? 1 : 0)) - 1),
                 };
-
 
             var (xs1, zs1, r1) = row1.SplitRow();
             var (xs2, zs2, r2) = row2.SplitRow();
@@ -110,7 +110,7 @@ namespace QSharpCommunity.Simulators.Chp
 
             foreach (var idxColumn in Enumerable.Range(0, xs1.Length))
             {
-                acc += g(xs1[idxColumn], zs1[idxColumn], xs2[idxColumn], zs2[idxColumn]);
+                acc += G(xs1[idxColumn], zs1[idxColumn], xs2[idxColumn], zs2[idxColumn]);
             }
 
             return ((r1 ? 2 : 0) + (r2 ? 2 : 0) + acc) % 4 == 2;
@@ -172,5 +172,4 @@ namespace QSharpCommunity.Simulators.Chp
             }
         }
     }
-
 }
