@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Quantum.Simulation.Core;
 
-// This C# project is based on a Python implementation by @Strilanc here: 
+// This C# project is based on a Python implementation by @Strilanc here:
 // https://github.com/Strilanc/python-chp-stabilizer-simulator
 namespace QSharpCommunity.Simulators.Chp
 {
 
-    internal static class Extensions 
+    internal static class Extensions
     {
         internal static void SetDiagonal<T>(this T[,] matrix, T value)
         {
@@ -52,7 +52,7 @@ namespace QSharpCommunity.Simulators.Chp
         {
             var (xs, zs, r) = vector.SplitRow();
             return (r ? "-" : "+") + string.Join("",
-                Enumerable.Zip(xs, zs, (x, z) => 
+                Enumerable.Zip(xs, zs, (x, z) =>
                     (x, z) switch
                     {
                         (false, false) => "I",
@@ -65,24 +65,24 @@ namespace QSharpCommunity.Simulators.Chp
         }
 
         internal static string RowToString(this bool[,] matrix, int idx) => matrix.Row(idx).ToArray().RowToString();
-        internal static string RowToLatex(this bool[,] matrix, int idx) => 
+        internal static string RowToLatex(this bool[,] matrix, int idx) =>
             string.Join(" & ", matrix.Row(idx).ToArray().Select(val => val ? 1 : 0));
 
         internal static string MatrixToString(this bool[,] matrix, bool showDestabilizers = false) =>
-            "<" + string.Join(", ", Enumerable.Range(matrix.GetLength(0)/2, matrix.GetLength(0)/2).Select(idx => matrix.RowToString(idx))) + ">" +
+            "<" + string.Join(", ", Enumerable.Range(matrix.GetLength(0) / 2, matrix.GetLength(0) / 2).Select(idx => matrix.RowToString(idx))) + ">" +
             (showDestabilizers ?
-            "| >" + string.Join(", ", Enumerable.Range(0, matrix.GetLength(0)/2).Select(idx => matrix.RowToString(idx))) + "<" :
+            "| >" + string.Join(", ", Enumerable.Range(0, matrix.GetLength(0) / 2).Select(idx => matrix.RowToString(idx))) + "<" :
             ">");
 
         internal static string MatrixToLatexString(this bool[,] matrix, bool showDestabilizers = false) =>
             (
                 showDestabilizers
                 ? string.Join(
-                    @" \\", Enumerable.Range(0, matrix.GetLength(0)/2).Select(idx => matrix.RowToLatex(idx))
+                    @" \\", Enumerable.Range(0, matrix.GetLength(0) / 2).Select(idx => matrix.RowToLatex(idx))
                 ) + @" \\ \hline"
                 : ""
             ) +
-            string.Join(@" \\", Enumerable.Range(matrix.GetLength(0)/2, matrix.GetLength(0)/2).Select(idx => matrix.RowToLatex(idx)));
+            string.Join(@" \\", Enumerable.Range(matrix.GetLength(0) / 2, matrix.GetLength(0) / 2).Select(idx => matrix.RowToLatex(idx)));
 
 
         internal static (bool[], bool[], bool) SplitRow(this IEnumerable<bool> row)
@@ -102,7 +102,7 @@ namespace QSharpCommunity.Simulators.Chp
                     (true, false) => (z2 ? 1 : 0) * (2 * (x2 ? 1 : 0) - 1),
                     (false, true) =>(x2 ? 1 : 0) * (2 * (z2 ? 1 : 0) - 1)
                 };
-            
+
 
             var (xs1, zs1, r1) = row1.SplitRow();
             var (xs2, zs2, r2) = row2.SplitRow();

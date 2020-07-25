@@ -6,6 +6,7 @@
 
 using System;
 using Microsoft.Jupyter.Core;
+using Microsoft.Quantum.IQSharp.Jupyter;
 
 namespace QSharpCommunity.Simulators.Chp
 {
@@ -31,34 +32,23 @@ namespace QSharpCommunity.Simulators.Chp
     public class TableauToHtmlEncoder : IResultEncoder
     {
         public string MimeType => MimeTypes.Html;
-
+        private IConfigurationSource configurationSource;
+        public TableauToHtmlEncoder(IConfigurationSource configurationSource)
+        {
+            this.configurationSource = configurationSource;
+        }
         public EncodedData? Encode(object displayable)
         {
             if (displayable is StabilizerTableau tableau)
             {
-                var nQubits = tableau.Data.GetLength(0)/2;
+                var showDestabilizers =
+                    configurationSource.Configuration.TryGetValue("chp.showDestabilizers", out var token)
+                    ? token.ToObject<bool>()
+                    : false;
+
+                var nQubits = tableau.Data.GetLength(0) / 2;
                 var tableFormat = new String('c', nQubits);
-                //Print out table headers/labels
-                // var headerRow = tableau.Data.$@"
-                        // <tr>
-                            // <th span=""{nQubits}"">$x$ on $i^{{th}}$ qubit</th>
-                            // <th span=""{nQubits}"">$z$ on $i^{{th}}$ qubit</th>
-                            // <th>phase</th>
-                        // </tr>
-                    // ";
-                // Making rows
-                //Putting it together
-                // var outputTable = $@"
-                    // <table style=""table-layout: fixed; width: 100%"">
-                        // <thead>
-                            // {headerRow}
-                        // </thead>
-                        // <tbody>
-                            // {formattedData}
-                        // </tbody>
-                    // </table>
-                // ";
-                var tableRows = tableau.Data.MatrixToLatexString(true);
+                var tableRows = tableau.Data.MatrixToLatexString(showDestabilizers);
 
                 var outputTable = $@"
                 $\left(\begin{{array}}{{{tableFormat}|{tableFormat}|c}}

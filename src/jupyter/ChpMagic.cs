@@ -89,14 +89,18 @@ namespace QSharpCommunity.Simulators.Chp
             var symbol = SymbolResolver.Resolve(name) as dynamic; // FIXME: should be as IQSharpSymbol.
             if (symbol == null) throw new InvalidOperationException($"Invalid operation name: {name}");
 
+            //TODO: File bug for the following to be public:
+            // https://github.com/microsoft/iqsharp/blob/9fa7d4da4ec0401bf5803e40fce5b37e716c3574/src/Jupyter/ConfigurationSource.cs#L35
             var nQubits =
                 configurationSource.Configuration.TryGetValue("chp.nQubits", out var token)
                 ? token.ToObject<int>()
                 : DefaultNQubits;
+
             var debug =
                 configurationSource.Configuration.TryGetValue("chp.debug", out var tokenDebug)
                 ? tokenDebug.ToObject<bool>()
                 : false;
+
             var qsim = new StabilizerSimulator(nQubits).WithStackTraceDisplay(channel);
             qsim.DisableLogToConsole();
             qsim.OnDisplayableDiagnostic += (displayable) =>

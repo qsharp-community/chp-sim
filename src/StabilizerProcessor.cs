@@ -11,7 +11,7 @@ using System.Runtime.ExceptionServices;
 using Microsoft.Quantum.Simulation.Common;
 using Microsoft.Quantum.Simulation.Core;
 
-// This C# project is based on a Python implementation by @Strilanc here: 
+// This C# project is based on a Python implementation by @Strilanc here:
 // https://github.com/Strilanc/python-chp-stabilizer-simulator
 namespace QSharpCommunity.Simulators.Chp
 {
@@ -50,7 +50,7 @@ namespace QSharpCommunity.Simulators.Chp
             }
         }
 
-        private void Phase(int target) 
+        private void Phase(int target)
         {
             // Add global phase, this represents the fact that SYS^{+} = -Y
             foreach (var idxRow in Enumerable.Range(0, table.GetLength(0)))
@@ -58,7 +58,7 @@ namespace QSharpCommunity.Simulators.Chp
                 table[idxRow, RIndex] ^= table[idxRow, X(target)] && table[idxRow, Z(target)];
             }
 
-            // 
+            //
             foreach (var idxRow in Enumerable.Range(0, table.GetLength(0)))
             {
                 table[idxRow, Z(target)] ^= table[idxRow, X(target)];
@@ -70,7 +70,7 @@ namespace QSharpCommunity.Simulators.Chp
         {
             foreach (var idxRow in Enumerable.Range(0, table.GetLength(0)))
             {
-                table[idxRow, RIndex] ^= table[idxRow, X(control)] & 
+                table[idxRow, RIndex] ^= table[idxRow, X(control)] &
                     table[idxRow, Z(target)] &
                     (table[idxRow, X(target)] ^ table[idxRow, Z(control)] ^ true);
             }
@@ -98,7 +98,7 @@ namespace QSharpCommunity.Simulators.Chp
             {
                 var collisions = table.Column(idx).IndicesWhere(b => b).ToList();
                 var idxFirst = nQubits + table.Column(idx).Skip(nQubits).IndicesWhere(b => b).First();
-                
+
                 foreach (var idxCollision in collisions.Where(idxCollision => idxCollision != idxFirst))
                 {
                     table.SetToRowSum(idxCollision, idxFirst);
@@ -106,14 +106,14 @@ namespace QSharpCommunity.Simulators.Chp
 
                 foreach (var idxColumn in Enumerable.Range(0, table.GetLength(1)))
                 {
-                    table[idxFirst - nQubits, idxColumn] = table[idxFirst, idxColumn]; 
-                    table[idxFirst, idxColumn] = false;              
+                    table[idxFirst - nQubits, idxColumn] = table[idxFirst, idxColumn];
+                    table[idxFirst, idxColumn] = false;
                 }
                 table[idxFirst, Z(idx)] = true;
                 table[idxFirst, RIndex] = result == Result.One;
                 return result;
             }
-            
+
         }
 
         private bool IsMeasurementDetermined(int idx, [NotNullWhen(true)] out Result result)
@@ -127,7 +127,7 @@ namespace QSharpCommunity.Simulators.Chp
                     if (table[idxDestabilizer, X(idx)])
                     {
                         vector.SetToRowSum(table, idxDestabilizer + nQubits);
-                    }                    
+                    }
                 }
                 result = vector[^1] ? Result.One : Result.Zero;
             }
@@ -152,6 +152,7 @@ namespace QSharpCommunity.Simulators.Chp
             Allocate(qubits);
             base.OnAllocateQubits(qubits);
         }
+
         /// <summary>
         /// Temporary check to give a more readable exception as long as there is no dynamic allocations.
         /// </summary>
@@ -161,6 +162,7 @@ namespace QSharpCommunity.Simulators.Chp
             Allocate(qubits);
             base.OnBorrowQubits(qubits, allocatedForBorrowingCount);
         }
+
         /// <summary>
         /// Temporary check to give a more readable exception as long as there is no dynamic allocations.
         /// </summary>
@@ -170,6 +172,7 @@ namespace QSharpCommunity.Simulators.Chp
             DeAllocate(qubits);
             base.OnReleaseQubits(qubits);
         }
+
         /// <summary>
         /// Temporary check to give a more readable exception as long as there is no dynamic allocations.
         /// </summary>
@@ -193,7 +196,7 @@ namespace QSharpCommunity.Simulators.Chp
             allocated -= qubits.Count;
         }
         private int allocated = 0;
-    
+
         //////////////////////////////////////////////////////////////////////
         // Overrides - Supported
         //////////////////////////////////////////////////////////////////////
@@ -238,7 +241,7 @@ namespace QSharpCommunity.Simulators.Chp
             }
             else if (location is string filename)
             {
-                File.WriteAllText(filename, table.MatrixToString(true));  
+                File.WriteAllText(filename, table.MatrixToString(true));
             }
             else
             {
@@ -325,30 +328,31 @@ namespace QSharpCommunity.Simulators.Chp
 
         public override void Assert(IQArray<Pauli> bases, IQArray<Qubit> qubits, Result result, string msg) =>
             AssertProb(bases, qubits, result == Result.One ? 0 : 1, msg, 1e-10);
-        public override void AssertProb(IQArray<Pauli> bases, IQArray<Qubit> qubits, double probabilityOfZero, string msg, double tol) 
+        public override void AssertProb(IQArray<Pauli> bases, IQArray<Qubit> qubits, double probabilityOfZero, string msg, double tol)
         {
             bool shouldBeDeterministic;
             Result? expectedResult;
             // Is the probability 0?
-            if (Math.Abs(probabilityOfZero-0)<tol)
+            if (Math.Abs(probabilityOfZero - 0) < tol)
             {
                 shouldBeDeterministic = true;
                 expectedResult = Result.One;
             }
-            else if (Math.Abs(probabilityOfZero-0.5)<tol)
+            else if (Math.Abs(probabilityOfZero - 0.5) < tol)
             {
                 shouldBeDeterministic = false;
                 expectedResult = null;
             }
-            else if (Math.Abs(probabilityOfZero-1)<tol)
+            else if (Math.Abs(probabilityOfZero - 1) < tol)
             {
                 shouldBeDeterministic = true;
-                expectedResult = Result.Zero;               
+                expectedResult = Result.Zero;
             }
             else
             {
                 throw new ExecutionFailException(msg);
             }
+            
             Simulator?.MaybeDisplayDiagnostic(
                 new DebugMessage
                 {
@@ -364,10 +368,10 @@ namespace QSharpCommunity.Simulators.Chp
                 {
                     WriteToScratch(bases, qubits, aux);
                     AssertProb(
-                        new QArray<Pauli>(new[] { Pauli.PauliZ }), 
-                        new QArray<Qubit>(new[] { aux }), 
+                        new QArray<Pauli>(new[] { Pauli.PauliZ }),
+                        new QArray<Qubit>(new[] { aux }),
                         probabilityOfZero,
-                        msg, 
+                        msg,
                         tol
                     );
                     WriteToScratch(
@@ -384,7 +388,7 @@ namespace QSharpCommunity.Simulators.Chp
             else
             {
                 var isDeterministic = IsMeasurementDetermined(qubits[idx].Id, out var result);
-                if (isDeterministic == shouldBeDeterministic) 
+                if (isDeterministic == shouldBeDeterministic)
                 {
                     if (!isDeterministic || expectedResult == result)
                     {
@@ -455,62 +459,62 @@ namespace QSharpCommunity.Simulators.Chp
         //////////////////////////////////////////////////////////////////////
         // Overrides - Unsupported
         //////////////////////////////////////////////////////////////////////
-        public override void ControlledExp(IQArray<Qubit> controls, IQArray<Pauli> paulis, double theta, IQArray<Qubit> qubits) => 
+        public override void ControlledExp(IQArray<Qubit> controls, IQArray<Pauli> paulis, double theta, IQArray<Qubit> qubits) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void ControlledExpFrac(IQArray<Qubit> controls, IQArray<Pauli> paulis, long numerator, long power, IQArray<Qubit> qubits) => 
+
+        public override void ControlledExpFrac(IQArray<Qubit> controls, IQArray<Pauli> paulis, long numerator, long power, IQArray<Qubit> qubits) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void ControlledR(IQArray<Qubit> controls, Pauli axis, double theta, Qubit qubit) => 
+
+        public override void ControlledR(IQArray<Qubit> controls, Pauli axis, double theta, Qubit qubit) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void ControlledR1(IQArray<Qubit> controls, double theta, Qubit qubit) => 
+
+        public override void ControlledR1(IQArray<Qubit> controls, double theta, Qubit qubit) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void ControlledR1Frac(IQArray<Qubit> controls, long numerator, long power, Qubit qubit) => 
+
+        public override void ControlledR1Frac(IQArray<Qubit> controls, long numerator, long power, Qubit qubit) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void ControlledRFrac(IQArray<Qubit> controls, Pauli axis, long numerator, long power, Qubit qubit) => 
+
+        public override void ControlledRFrac(IQArray<Qubit> controls, Pauli axis, long numerator, long power, Qubit qubit) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void ControlledS(IQArray<Qubit> controls, Qubit qubit) => 
+
+        public override void ControlledS(IQArray<Qubit> controls, Qubit qubit) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void ControlledSAdjoint(IQArray<Qubit> controls, Qubit qubit) => 
+
+        public override void ControlledSAdjoint(IQArray<Qubit> controls, Qubit qubit) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void ControlledSWAP(IQArray<Qubit> controls, Qubit qubit1, Qubit qubit2) => 
+
+        public override void ControlledSWAP(IQArray<Qubit> controls, Qubit qubit1, Qubit qubit2) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void ControlledT(IQArray<Qubit> controls, Qubit qubit) => 
+
+        public override void ControlledT(IQArray<Qubit> controls, Qubit qubit) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void ControlledTAdjoint(IQArray<Qubit> controls, Qubit qubit) => 
+
+        public override void ControlledTAdjoint(IQArray<Qubit> controls, Qubit qubit) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void Exp(IQArray<Pauli> paulis, double theta, IQArray<Qubit> qubits) => 
+
+        public override void Exp(IQArray<Pauli> paulis, double theta, IQArray<Qubit> qubits) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void ExpFrac(IQArray<Pauli> paulis, long numerator, long power, IQArray<Qubit> qubits) => 
+
+        public override void ExpFrac(IQArray<Pauli> paulis, long numerator, long power, IQArray<Qubit> qubits) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void R(Pauli axis, double theta, Qubit qubit) => 
+
+        public override void R(Pauli axis, double theta, Qubit qubit) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void R1(double theta, Qubit qubit) => 
+
+        public override void R1(double theta, Qubit qubit) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void R1Frac(long numerator, long power, Qubit qubit) => 
+
+        public override void R1Frac(long numerator, long power, Qubit qubit) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void RFrac(Pauli axis, long numerator, long power, Qubit qubit) => 
+
+        public override void RFrac(Pauli axis, long numerator, long power, Qubit qubit) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void T(Qubit qubit) => 
+
+        public override void T(Qubit qubit) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
-        public override void TAdjoint(Qubit qubit) => 
+
+        public override void TAdjoint(Qubit qubit) =>
             throw new UnsupportedOperationException("This operation is not supported in the CHP Stabilizer formalism.");
-            
+
     }
 }
