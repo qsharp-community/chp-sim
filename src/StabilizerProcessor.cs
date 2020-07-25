@@ -1,8 +1,10 @@
-// Copyright (c) Sarah Kaiser. All rights reserved.
+﻿// Copyright (c) Sarah Kaiser. All rights reserved.
 // Licensed under the MIT License.
+
 #nullable enable
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.ExceptionServices;
@@ -19,9 +21,9 @@ namespace QSharpCommunity.Simulators.Chp
         private readonly int nQubits;
         internal StabilizerSimulator? Simulator;
 
-        public StabilizerProcessor(int nQubits = 1024)
+        public StabilizerProcessor(int? nQubits = null)
         {
-            this.nQubits = nQubits;
+            this.nQubits = nQubits ?? 1024;
             // By default, this array is full of false
             table = new bool[2 * this.nQubits, 2 * this.nQubits + 1];
             table.SetDiagonal(true);
@@ -50,7 +52,7 @@ namespace QSharpCommunity.Simulators.Chp
 
         private void Phase(int target) 
         {
-            // Add global phase, this represents the fact that HYH = -Y
+            // Add global phase, this represents the fact that SYS^{+} = -Y
             foreach (var idxRow in Enumerable.Range(0, table.GetLength(0)))
             {
                 table[idxRow, RIndex] ^= table[idxRow, X(target)] && table[idxRow, Z(target)];
@@ -114,7 +116,7 @@ namespace QSharpCommunity.Simulators.Chp
             
         }
 
-        private bool IsMeasurementDetermined(int idx, out Result result)
+        private bool IsMeasurementDetermined(int idx, [NotNullWhen(true)] out Result result)
         {
             var isDetermined = !table.Column(idx).Skip(nQubits).Any(b => b);
             if (isDetermined)
@@ -134,6 +136,10 @@ namespace QSharpCommunity.Simulators.Chp
                 result = (new System.Random()).Next(2) == 1 ? Result.One : Result.Zero;
             }
 
+            Simulator?.MaybeDisplayDiagnostic(new DebugMessage
+            {
+                Message = $"IsResultDetermined({idx}, out {result}) = {isDetermined}"
+            });
             return isDetermined;
         }
 
@@ -222,6 +228,10 @@ namespace QSharpCommunity.Simulators.Chp
 
         public override void OnDumpMachine<T>(T location)
         {
+            Simulator?.MaybeDisplayDiagnostic(new StabilizerTableau
+            {
+                Data = table
+            });
             if (location is QVoid)
             {
                 System.Console.WriteLine(table.MatrixToString(true));
@@ -318,7 +328,7 @@ namespace QSharpCommunity.Simulators.Chp
         public override void AssertProb(IQArray<Pauli> bases, IQArray<Qubit> qubits, double probabilityOfZero, string msg, double tol) 
         {
             bool shouldBeDeterministic;
-            var expectedResult = Result.Zero;
+            Result? expectedResult;
             // Is the probability 0?
             if (Math.Abs(probabilityOfZero-0)<tol)
             {
@@ -328,6 +338,7 @@ namespace QSharpCommunity.Simulators.Chp
             else if (Math.Abs(probabilityOfZero-0.5)<tol)
             {
                 shouldBeDeterministic = false;
+                expectedResult = null;
             }
             else if (Math.Abs(probabilityOfZero-1)<tol)
             {
@@ -338,6 +349,12 @@ namespace QSharpCommunity.Simulators.Chp
             {
                 throw new ExecutionFailException(msg);
             }
+            Simulator?.MaybeDisplayDiagnostic(
+                new DebugMessage
+                {
+                    Message = $"shouldBeDeterministic = {shouldBeDeterministic}, expectedResult = {expectedResult}"
+                }
+            );
 
             if (!bases.TryGetSingleZ(out var idx))
             {
@@ -366,7 +383,7 @@ namespace QSharpCommunity.Simulators.Chp
             }
             else
             {
-                var isDeterministic = IsMeasurementDetermined(idx, out var result);
+                var isDeterministic = IsMeasurementDetermined(qubits[idx].Id, out var result);
                 if (isDeterministic == shouldBeDeterministic) 
                 {
                     if (!isDeterministic || expectedResult == result)
@@ -397,7 +414,7 @@ namespace QSharpCommunity.Simulators.Chp
                     this.Simulator!.QubitManager?.Release(aux);
                 }
             }
-            return MeasureByIndex(idx);
+            return MeasureByIndex(qubits[idx].Id);
         }
 
         private void WriteToScratch(IQArray<Pauli> bases, IQArray<Qubit> qubits, Qubit aux)

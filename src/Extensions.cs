@@ -65,12 +65,24 @@ namespace QSharpCommunity.Simulators.Chp
         }
 
         internal static string RowToString(this bool[,] matrix, int idx) => matrix.Row(idx).ToArray().RowToString();
+        internal static string RowToLatex(this bool[,] matrix, int idx) => 
+            string.Join(" & ", matrix.Row(idx).ToArray().Select(val => val ? 1 : 0));
 
         internal static string MatrixToString(this bool[,] matrix, bool showDestabilizers = false) =>
             "<" + string.Join(", ", Enumerable.Range(matrix.GetLength(0)/2, matrix.GetLength(0)/2).Select(idx => matrix.RowToString(idx))) + ">" +
             (showDestabilizers ?
             "| >" + string.Join(", ", Enumerable.Range(0, matrix.GetLength(0)/2).Select(idx => matrix.RowToString(idx))) + "<" :
             ">");
+
+        internal static string MatrixToLatexString(this bool[,] matrix, bool showDestabilizers = false) =>
+            (
+                showDestabilizers
+                ? string.Join(
+                    @" \\", Enumerable.Range(0, matrix.GetLength(0)/2).Select(idx => matrix.RowToLatex(idx))
+                ) + @" \\ \hline"
+                : ""
+            ) +
+            string.Join(@" \\", Enumerable.Range(matrix.GetLength(0)/2, matrix.GetLength(0)/2).Select(idx => matrix.RowToLatex(idx)));
 
 
         internal static (bool[], bool[], bool) SplitRow(this IEnumerable<bool> row)
