@@ -3,7 +3,7 @@
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation CNotZeroZeroZero() : Unit {
         using ((c,t) = (Qubit(),Qubit())) {
@@ -17,7 +17,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation CNotZeroOneOne() : Unit {
         using ((c,t) = (Qubit(),Qubit())) {
@@ -31,7 +31,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation CNotOneZeroOne() : Unit {
         using ((c,t) = (Qubit(),Qubit())) {
@@ -46,7 +46,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation CNotOneOneZero() : Unit {
         using ((c,t) = (Qubit(),Qubit())) {
@@ -61,7 +61,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation InvertedCNotZeroZeroZero() : Unit {
         using ((c,t) = (Qubit(),Qubit())) {
@@ -79,7 +79,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation InvertedCNotZeroOneOne() : Unit {
         using ((c,t) = (Qubit(),Qubit())) {
@@ -97,7 +97,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation InvertedCNotOneZeroOne() : Unit {
         using ((c,t) = (Qubit(),Qubit())) {
@@ -116,7 +116,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation InvertedCNotOneOneZero() : Unit {
         using ((c,t) = (Qubit(),Qubit())) {
@@ -135,7 +135,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation CNotEqual() : Unit {
         using ((c,t) = (Qubit(),Qubit())) {

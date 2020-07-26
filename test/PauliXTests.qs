@@ -3,7 +3,7 @@
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PauliXFlipOneQubit () : Unit {
         using (q = Qubit()) {
@@ -14,7 +14,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PauliXFlipSecondQubit () : Unit {
         using (register = Qubit[4]) {
@@ -28,7 +28,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PauliXPairQubit () : Unit {
         using ((left,right) = (Qubit(),Qubit())) {
@@ -41,7 +41,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PauliXFlipAfterHadamardQubit () : Unit {
         using (q = Qubit()) {
@@ -54,7 +54,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation FlippedPauliXFlipAfterHadamardQubit () : Unit {
         using (q = Qubit()) {

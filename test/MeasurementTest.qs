@@ -3,7 +3,7 @@
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
     
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation MeasureZeroTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -20,7 +20,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation MeasureOneTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -37,7 +37,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation MeasureOneBothTest() : Unit {
         using ((a,b) = (Qubit(),Qubit())) {
@@ -50,6 +50,22 @@
             EqualityFactR(y,One, "Measurement should be |1>");
             AssertMeasurement([PauliZ], [a], One, "Should be |1>");
             AssertMeasurement([PauliZ], [b], One, "Should be |1>");
+            Reset(b);
+        }
+        Message("Test passed.");
+    }
+
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
+    @Test("QuantumSimulator")
+    operation MeasureBellBothTest() : Unit {
+        using ((a, b) = (Qubit(), Qubit())) {
+            H(a);
+            CNOT(a, b);
+            let x = Measure([PauliX, PauliX],[a, b]);
+            //M(a) == Measure([PauliZ], [a])
+            EqualityFactR(x, Zero, "Measurements should be Zero");
+            
+            Reset(a);
             Reset(b);
         }
         Message("Test passed.");

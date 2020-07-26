@@ -3,7 +3,7 @@
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
     
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseRotateXQubit () : Unit {
         using (q = Qubit()) {
@@ -15,7 +15,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseRotateX2Qubit () : Unit {
         using (q = Qubit()) {
@@ -27,7 +27,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseRotateYQubit () : Unit {
         using (q = Qubit()) {
@@ -39,7 +39,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseRotateY2Qubit () : Unit {
         using (q = Qubit()) {
@@ -52,7 +52,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseRotateZQubit () : Unit {
         using (q = Qubit()) {
@@ -64,7 +64,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseRotateZ2Qubit () : Unit {
         using (q = Qubit()) {
@@ -77,7 +77,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseZeroQubit () : Unit {
         using (q = Qubit()) {
@@ -88,7 +88,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseOneQubit () : Unit {
         using (q = Qubit()) {
@@ -100,7 +100,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseRotateMultiQubit () : Unit {
         using (register = Qubit[3]) {
@@ -115,7 +115,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseRotateXMultiQubit () : Unit {
         using (register = Qubit[3]) {
@@ -130,7 +130,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseRotateYMultiQubit () : Unit {
         using (register = Qubit[3]) {
@@ -145,7 +145,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseRotatePairYMultiQubit () : Unit {
         using ((left,right) = (Qubit(),Qubit())) {
@@ -159,7 +159,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseRotatePairXMultiQubit () : Unit {
         using ((left,right) = (Qubit(),Qubit())) {
@@ -173,7 +173,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseRotatePairZMultiQubit () : Unit {
         using ((left,right) = (Qubit(),Qubit())) {
@@ -187,7 +187,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseMultiQubit () : Unit {
         using (register = Qubit[3]) {
@@ -197,7 +197,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation PhaseXMultiQubit () : Unit {
         using (register = Qubit[3]) {

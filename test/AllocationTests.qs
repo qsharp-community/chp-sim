@@ -3,7 +3,7 @@
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;
     
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation AllocateOneQubit () : Unit {
         using (q = Qubit()) {
@@ -12,7 +12,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation BorrowOneQubit () : Unit {
         borrowing (q = Qubit()) {
@@ -21,7 +21,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation AllocateMultipleQubits () : Unit {
         using (register = Qubit[4]) {
@@ -30,7 +30,7 @@
         Message("Test passed.");
     }
 
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation BorrowingMultipleQubits () : Unit {
         borrowing (register = Qubit[4]) {
@@ -40,7 +40,7 @@
     }
 
     // Check that we don't go directly OOM with largish values
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("ToffoliSimulator")
     operation AllocateManyQubits () : Unit {
         using (register = Qubit[1024]) {
@@ -56,7 +56,7 @@
     }
 
     // Check that we don't go directly OOM with largish values
-    @Test("chp.StabilizerSimulator")
+    @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("ToffoliSimulator")
     operation BorrowingManyQubits () : Unit {
         borrowing (register = Qubit[1024]) {

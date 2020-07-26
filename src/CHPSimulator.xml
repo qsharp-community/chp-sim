@@ -1,0 +1,399 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CHPSimulator</name>
+    </assembly>
+    <members>
+        <member name="T:QSharpCommunity.Simulators.Chp.DebugMessage">
+            <summary>
+            Message to show in debugging.
+            </summary>
+        </member>
+        <member name="P:QSharpCommunity.Simulators.Chp.DebugMessage.Message">
+            <summary>
+            Gets or sets the message to show for debugging.
+            </summary>
+        </member>
+        <member name="T:QSharpCommunity.Simulators.Chp.Extensions">
+            <summary>
+            Extension methods for the simulators.
+            </summary>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.SetDiagonal``1(``0[0:,0:],``0)">
+            <summary>
+            Set the diagonal line of the matix to the value.
+            </summary>
+            <typeparam name="T">Matrix type.</typeparam>
+            <param name="matrix">The matrix.</param>
+            <param name="value">The value to set it at.</param>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.SwapColumns(System.Boolean[0:,0:],System.Int32,System.Int32)">
+            <summary>
+            Swapped the collumns.
+            </summary>
+            <param name="matrix">The matrix.</param>
+            <param name="idx1">Collum to swap with idx2.</param>
+            <param name="idx2">Collum to swap with idx1.</param>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.Row``1(``0[0:,0:],System.Int32)">
+            <summary>
+            Returns the row of the matrix.
+            </summary>
+            <typeparam name="T">the matrix type.</typeparam>
+            <param name="matrix">The matrix.</param>
+            <param name="idxRow">The row that needs to be returned.</param>
+            <returns>The row highlighted by idxRow.</returns>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.Column``1(``0[0:,0:],System.Int32)">
+            <summary>
+            Returns the column of the matrix.
+            </summary>
+            <typeparam name="T">the matrix type.</typeparam>
+            <param name="matrix">The matrix.</param>
+            <param name="idxColumn">The column that needs to be returned.</param>
+            <returns>The row highlighted by idxColumn.</returns>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.RowToString(System.Boolean[])">
+            <summary>
+            Represents the Row including the phase.
+            </summary>
+            <param name="vector">Row represented as a vector.</param>
+            <returns>The rendered row including the phase.</returns>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.RowToString(System.Boolean[0:,0:],System.Int32)">
+            <summary>
+            Renders the row to a text string.
+            </summary>
+            <param name="matrix">The Matrix.</param>
+            <param name="idx">Row index.</param>
+            <returns>A rendered string of the row.</returns>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.RowToLatex(System.Boolean[0:,0:],System.Int32)">
+            <summary>
+            Renders the row to a latex usable text string.
+            </summary>
+            <param name="matrix">The Matrix.</param>
+            <param name="idx">Row index.</param>
+            <returns>A rendered string of the row.</returns>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.MatrixToString(System.Boolean[0:,0:],System.Boolean)">
+            <summary>
+            Renders the matrix to a text string.
+            </summary>
+            <param name="matrix">The Matrix.</param>
+            <param name="showDestabilizers">Include the stabilizers in the string.</param>
+            <returns>A rendered string of the table.</returns>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.MatrixToLatexString(System.Boolean[0:,0:],System.Boolean)">
+            <summary>
+            Renders the matrixto a latex usable text string.
+            </summary>
+            <param name="matrix">The Matrix.</param>
+            <param name="showDestabilizers">Include the stabilizers in the string.</param>
+            <returns>A rendered string of the table.</returns>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.SplitRow(System.Collections.Generic.IEnumerable{System.Boolean})">
+            <summary>
+            Split the row into; stabalizers, destabilzers, and phase.
+            </summary>
+            <param name="row">Boolean representation of the row.</param>
+            <returns>3-Element Tuple with seperated stabalizers, destabilzers, and phase.</returns>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.PhaseProduct(System.Collections.Generic.IEnumerable{System.Boolean},System.Collections.Generic.IEnumerable{System.Boolean})">
+            <summary>
+            Calculate the product of the phase.
+            </summary>
+            <param name="row1">Left vector.</param>
+            <param name="row2">Right vector.</param>
+            <returns>PhaseProduct.</returns>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.SetToRowSum(System.Boolean[0:,0:],System.Int32,System.Int32)">
+            <summary>
+            Set the row sum for the Matrix.
+            </summary>
+            <param name="matrix">The Matrix.</param>
+            <param name="idxTarget">Index of vector to.</param>
+            <param name="idxSource">Index of vector from.</param>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.SetToRowSum(System.Boolean[],System.Boolean[0:,0:],System.Int32)">
+            <summary>
+            Set the row sum for the Matrix.
+            </summary>
+            <param name="vector">The vector.</param>
+            <param name="matrix">The Matrix.</param>
+            <param name="idxSource">Index of vector from.</param>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.IndicesWhere``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Search the matrix.
+            </summary>
+            <typeparam name="T">Type of the matrix.</typeparam>
+            <param name="source">Source list to check.</param>
+            <param name="predicate">Predicate to check.</param>
+            <returns>Indices of where predicate is true.</returns>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.TryGetSingleZ(System.Collections.Generic.IEnumerable{Microsoft.Quantum.Simulation.Core.Pauli},System.Int32@)">
+            <summary>
+            Try to find the PauliZ that it can be measured on (if there isn't a measurement on X or Y.).
+            </summary>
+            <param name="paulis">The Pauli axis being measured on.</param>
+            <param name="idx">The index of the PauliX. -1 otherwise.</param>
+            <returns>If it can be measured on a single PauliZ.</returns>
+        </member>
+        <member name="T:QSharpCommunity.Simulators.Chp.ChpMagic">
+            <summary>
+            Runs a given function or operation on the ChpSimulator target machine.
+            </summary>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.ChpMagic.#ctor(Microsoft.Jupyter.Core.ISymbolResolver,Microsoft.Quantum.IQSharp.Jupyter.IConfigurationSource)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QSharpCommunity.Simulators.Chp.ChpMagic"/> class.
+            Default constructor.
+            </summary>
+            <param name="resolver">Symbol resolver.</param>
+            <param name="configurationSource">Source for confirgarion settings.</param>
+        </member>
+        <member name="P:QSharpCommunity.Simulators.Chp.ChpMagic.SymbolResolver">
+            <summary>
+            Gets the ISumbolResolver used to find the function/operation to simulate.
+            </summary>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.ChpMagic.Run(System.String,Microsoft.Jupyter.Core.IChannel)">
+            <inheritdoc />
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.ChpMagic.RunAsync(System.String,Microsoft.Jupyter.Core.IChannel)">
+            <summary>
+            Simulates a function/operation using the ChpSimulator as target machine.
+            It expects a single input: the name of the function/operation to simulate.
+            </summary>
+            <param name="input">current parameters for the fuinction.</param>
+            <param name="channel">channal connecting up with jupiter.</param>
+            <returns>funtion result.</returns>
+        </member>
+        <member name="T:QSharpCommunity.Simulators.Chp.StabilizerTableau">
+            <summary>
+            Representation of the Tableau.
+            </summary>
+        </member>
+        <member name="P:QSharpCommunity.Simulators.Chp.StabilizerTableau.Data">
+            <summary>
+            Gets or sets the data to be shown in the Tableau format.
+            </summary>
+        </member>
+        <member name="T:QSharpCommunity.Simulators.Chp.TableauToHtmlEncoder">
+            <summary>
+            Encodes the Tableau in HTML so it can be rendered by jupiter.
+            </summary>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.TableauToHtmlEncoder.#ctor(Microsoft.Quantum.IQSharp.Jupyter.IConfigurationSource)">
+            <summary>
+            Initializes a new instance of the <see cref="T:QSharpCommunity.Simulators.Chp.TableauToHtmlEncoder"/> class.
+            </summary>
+            <param name="configurationSource">Settings to be used.</param>
+        </member>
+        <member name="P:QSharpCommunity.Simulators.Chp.TableauToHtmlEncoder.MimeType">
+            <summary>
+            Gets the mimetype used for rendering that its html.
+            </summary>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.TableauToHtmlEncoder.Encode(System.Object)">
+            <summary>
+            Returns the StabilizerTableau into the text as encoded data.
+            </summary>
+            <param name="displayable">Should be the StabilizerTableau.</param>
+            <returns>Text encoded table.</returns>
+        </member>
+        <member name="T:QSharpCommunity.Simulators.Chp.TableauToTextEncoder">
+            <summary>
+            Encodes the Tableau in text so it can be rendered by jupiter.
+            </summary>
+        </member>
+        <member name="P:QSharpCommunity.Simulators.Chp.TableauToTextEncoder.MimeType">
+            <summary>
+            Gets the mimetype used for rendering that its text.
+            </summary>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.TableauToTextEncoder.Encode(System.Object)">
+            <summary>
+            Returns the StabilizerTableau into the text as encoded data.
+            </summary>
+            <param name="displayable">Should be the StabilizerTableau.</param>
+            <returns>Text encoded table.</returns>
+        </member>
+        <member name="T:QSharpCommunity.Simulators.Chp.StabilizerProcessor">
+            <summary>
+            CHP Simulator class.
+            </summary>
+        </member>
+        <member name="F:QSharpCommunity.Simulators.Chp.StabilizerProcessor.allocated">
+            <summary>
+            Current allocated qubit count.
+            </summary>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.#ctor(System.Nullable{System.Int32})">
+            <summary>
+            Initializes a new instance of the <see cref="T:QSharpCommunity.Simulators.Chp.StabilizerProcessor"/> class.
+            </summary>
+            <param name="nQubits">Amount of qubits to simulate.</param>
+        </member>
+        <member name="P:QSharpCommunity.Simulators.Chp.StabilizerProcessor.Simulator">
+            <summary>
+            Gets or sets the simulator used in this run.
+            </summary>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.OnAllocateQubits(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit})">
+            <summary>
+            Temporary check to give a more readable exception as long as there is no dynamic allocations.
+            </summary>
+            <param name="qubits">qubits to allocate.</param>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.OnBorrowQubits(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},System.Int64)">
+            <summary>
+            Temporary check to give a more readable exception as long as there is no dynamic allocations.
+            </summary>
+            <param name="qubits">qubits to allocate.</param>
+            <param name="allocatedForBorrowingCount">count of qubits to reserve for borrowing.</param>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.OnReleaseQubits(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit})">
+            <summary>
+            Temporary check to give a more readable exception as long as there is no dynamic allocations.
+            </summary>
+            <param name="qubits">qubits to deallocate.</param>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.OnReturnQubits(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},System.Int64)">
+            <summary>
+            Temporary check to give a more readable exception as long as there is no dynamic allocations.
+            </summary>
+            <param name="qubits">qubits to deallocate.</param>
+            <param name="releasedOnReturnCount">count of qubits being released.</param>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.Reset(Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.H(Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ControlledH(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.S(Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.SAdjoint(Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.OnDumpMachine``1(``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.OnDumpRegister``1(``0,Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit})">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.X(Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ControlledX(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.Y(Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ControlledY(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.Z(Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ControlledZ(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.SWAP(Microsoft.Quantum.Simulation.Core.Qubit,Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.Assert(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Pauli},Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},Microsoft.Quantum.Simulation.Core.Result,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.AssertProb(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Pauli},Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},System.Double,System.String,System.Double)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.M(Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.Measure(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Pauli},Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit})">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ControlledExp(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Pauli},System.Double,Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit})">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ControlledExpFrac(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Pauli},System.Int64,System.Int64,Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit})">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ControlledR(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},Microsoft.Quantum.Simulation.Core.Pauli,System.Double,Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ControlledR1(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},System.Double,Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ControlledR1Frac(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},System.Int64,System.Int64,Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ControlledRFrac(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},Microsoft.Quantum.Simulation.Core.Pauli,System.Int64,System.Int64,Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ControlledS(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ControlledSAdjoint(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ControlledSWAP(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},Microsoft.Quantum.Simulation.Core.Qubit,Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ControlledT(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ControlledTAdjoint(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit},Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.Exp(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Pauli},System.Double,Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit})">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.ExpFrac(Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Pauli},System.Int64,System.Int64,Microsoft.Quantum.Simulation.Core.IQArray{Microsoft.Quantum.Simulation.Core.Qubit})">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.R(Microsoft.Quantum.Simulation.Core.Pauli,System.Double,Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.R1(System.Double,Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.R1Frac(System.Int64,System.Int64,Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.RFrac(Microsoft.Quantum.Simulation.Core.Pauli,System.Int64,System.Int64,Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.T(Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerProcessor.TAdjoint(Microsoft.Quantum.Simulation.Core.Qubit)">
+            <inheritdoc/>
+        </member>
+        <member name="T:QSharpCommunity.Simulators.Chp.StabilizerSimulator">
+            <summary>
+            CHP Simulator.
+            </summary>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerSimulator.#ctor(System.Nullable{System.Int32})">
+            <summary>
+            Initializes a new instance of the <see cref="T:QSharpCommunity.Simulators.Chp.StabilizerSimulator"/> class.
+            </summary>
+            <param name="nQubits">Qubits to use for simulation.</param>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.StabilizerSimulator.MaybeDisplayDiagnostic(System.Object)">
+            <summary>
+            If diagnostic is enabled, show diagnostic information.
+            </summary>
+            <param name="displayable">Diagnostic displayable information.</param>
+        </member>
+    </members>
+</doc>
