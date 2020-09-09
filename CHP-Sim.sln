@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30309.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CHPSimulator", "src\CHPSimulator.csproj", "{F1CC2581-49ED-4491-AD84-2C37F5428355}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChpSimulator", "src\ChpSimulator.csproj", "{F1CC2581-49ED-4491-AD84-2C37F5428355}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CHPSimulator.Test", "test\CHPSimulator.Test.csproj", "{D6869FAA-528A-41EF-A7C8-ED053DF8931C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChpSimulator.Test", "test\ChpSimulator.Test.csproj", "{D6869FAA-528A-41EF-A7C8-ED053DF8931C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{66F1F35E-1BD1-4E55-AE35-9CA204E81834}"
 EndProject

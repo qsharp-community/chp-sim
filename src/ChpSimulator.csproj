@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Quantum.Simulators" Version="0.12.20072031" />
-    <PackageReference Include="Microsoft.Quantum.IQSharp.Jupyter" Version="0.12.20072031" />
+    <PackageReference Include="Microsoft.Quantum.Simulators" Version="0.12.20082513" />
+    <PackageReference Include="Microsoft.Quantum.IQSharp.Jupyter" Version="0.12.20082513" />
   </ItemGroup>
 
   <!--For more info on the package properties check out https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#nuget-metadata-properties -->
@@ -27,7 +27,7 @@
     <PackageLicenceExpression>MIT</PackageLicenceExpression>
     <RepositoryUrl>https://github.com/qsharp-community/chp-sim.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <DocumentationFile>CHPSimulator.xml</DocumentationFile>
+    <DocumentationFile>ChpSimulator.xml</DocumentationFile>
   </PropertyGroup>
 
 
