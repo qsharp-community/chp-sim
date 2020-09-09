@@ -7,6 +7,6 @@
         "ms-python.python"
     ],
     "remoteEnv": {
-        "IQSHARP_HOSTING_ENV": "QRAM_DEVCONTAINER"
+        "IQSHARP_HOSTING_ENV": "CHP_DEVCONTAINER"
     }
 }
