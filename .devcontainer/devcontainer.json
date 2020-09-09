@@ -1,11 +1,12 @@
 {
     "dockerFile": "../Dockerfile",
     "extensions": [
-        "quantum.quantum-devkit-vscode",
-        "ms-vscode.csharp",
-        "editorconfig.editorconfig",
-        "ms-python.python"
-    ],
+		"quantum.quantum-devkit-vscode",
+		"ms-vscode.csharp",
+		"editorconfig.editorconfig",
+		"ms-python.python",
+		"ms-dotnettools.csharp"
+	],
     "remoteEnv": {
         "IQSHARP_HOSTING_ENV": "CHP_DEVCONTAINER"
     }
