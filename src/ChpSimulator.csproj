@@ -21,7 +21,7 @@
   <!--For more info on the package properties check out https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#nuget-metadata-properties -->
   <PropertyGroup>
     <PackageId>QSharpCommunity.Simulators.Chp</PackageId>
-    <Description>Quantum simulator for Q# that uses the CHP classical subtheory of quantum.</Description>
+    <Description>Quantum simulator for Q# that uses the CHP classical subtheory of quantum mechanics.</Description>
     <Company>https://qsharp.community/</Company>
     <Copyright>Copyright (c) Sarah Kaiser. All rights reserved. Licensed under the MIT License.</Copyright>
     <PackageLicenceExpression>MIT</PackageLicenceExpression>
