@@ -1,4 +1,4 @@
-﻿namespace CHPSimulator.Test {
+﻿namespace ChpSimulator.Test {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Diagnostics;
     open Microsoft.Quantum.Intrinsic;

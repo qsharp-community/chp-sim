@@ -23,7 +23,7 @@ jobs:
     - name: "Setup .NET Core @ Latest"
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1.x'
+        dotnet-version: '3.1.101'  #https://github.com/NuGet/Home/issues/3406 Went to a patch version that seems to work
         source-url: https://nuget.pkg.github.com/qsharp-community/index.json
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}       

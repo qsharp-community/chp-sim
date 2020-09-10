@@ -14,20 +14,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Quantum.Simulators" Version="0.12.20072031" />
-    <PackageReference Include="Microsoft.Quantum.IQSharp.Jupyter" Version="0.12.20072031" />
+    <PackageReference Include="Microsoft.Quantum.Simulators" Version="0.12.20082513" />
+    <PackageReference Include="Microsoft.Quantum.IQSharp.Jupyter" Version="0.12.20082513" />
   </ItemGroup>
 
   <!--For more info on the package properties check out https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#nuget-metadata-properties -->
   <PropertyGroup>
     <PackageId>QSharpCommunity.Simulators.Chp</PackageId>
-    <Description>Quantum simulator for Q# that uses the CHP classical subtheory of quantum.</Description>
+    <Description>Quantum simulator for Q# that uses the CHP classical subtheory of quantum mechanics.</Description>
     <Company>https://qsharp.community/</Company>
     <Copyright>Copyright (c) Sarah Kaiser. All rights reserved. Licensed under the MIT License.</Copyright>
-    <PackageLicenceExpression>MIT</PackageLicenceExpression>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <!-- <LicenseURL>https://github.com/qsharp-community/chp-sim/blob/master/LICENSE</LicenseURL> -->
     <RepositoryUrl>https://github.com/qsharp-community/chp-sim.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <DocumentationFile>CHPSimulator.xml</DocumentationFile>
+    <DocumentationFile>ChpSimulator.xml</DocumentationFile>
   </PropertyGroup>
 
 
