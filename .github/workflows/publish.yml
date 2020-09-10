@@ -6,9 +6,7 @@ name: Publish to GitHub Packages
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches: [ master ]]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -25,7 +23,7 @@ jobs:
     - name: "Setup .NET Core @ Latest"
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1.101'
+        dotnet-version: '3.1.101'  #https://github.com/NuGet/Home/issues/3406 Went to a patch version that seems to work
         source-url: https://nuget.pkg.github.com/qsharp-community/index.json
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}       
