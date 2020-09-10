@@ -24,7 +24,8 @@
     <Description>Quantum simulator for Q# that uses the CHP classical subtheory of quantum mechanics.</Description>
     <Company>https://qsharp.community/</Company>
     <Copyright>Copyright (c) Sarah Kaiser. All rights reserved. Licensed under the MIT License.</Copyright>
-    <PackageLicenceExpression>MIT</PackageLicenceExpression>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <!-- <LicenseURL>https://github.com/qsharp-community/chp-sim/blob/master/LICENSE</LicenseURL> -->
     <RepositoryUrl>https://github.com/qsharp-community/chp-sim.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <DocumentationFile>ChpSimulator.xml</DocumentationFile>
