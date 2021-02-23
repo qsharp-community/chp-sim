@@ -6,36 +6,32 @@
     @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation AllocateOneQubit () : Unit {
-        using (q = Qubit()) {
-            AssertMeasurement([PauliZ], [q], Zero, "Newly allocated qubit must be in |0> state.");
-        }
+        use q = Qubit();
+        AssertMeasurement([PauliZ], [q], Zero, "Newly allocated qubit must be in |0> state.");
         Message("Test passed.");
     }
 
     @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation BorrowOneQubit () : Unit {
-        borrowing (q = Qubit()) {
-            AssertMeasurement([PauliZ], [q], Zero, "Newly allocated qubit must be in |0> state.");
-        }
+        borrow q = Qubit();
+        AssertMeasurement([PauliZ], [q], Zero, "Newly allocated qubit must be in |0> state.");
         Message("Test passed.");
     }
 
     @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation AllocateMultipleQubits () : Unit {
-        using (register = Qubit[4]) {
+        use register = Qubit[4];
             AssertAllZero(register);
-        }
         Message("Test passed.");
     }
 
     @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation BorrowingMultipleQubits () : Unit {
-        borrowing (register = Qubit[4]) {
+        borrow register = Qubit[4];
             AssertAllZero(register);
-        }
         Message("Test passed.");
     }
 
@@ -43,15 +39,14 @@
     @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("ToffoliSimulator")
     operation AllocateManyQubits () : Unit {
-        using (register = Qubit[1024]) {
-            AssertAllZero(register);
-            //Make sure the compiler doesn't cheat at us'
-            for(q in register)
-            {
-				X(q);
-            }
-            ResetAll(register);
+        use register = Qubit[1024];
+        AssertAllZero(register);
+        //Make sure the compiler doesn't cheat at us'
+        for q in register
+        {
+            X(q);
         }
+        ResetAll(register);
         Message("Test passed.");
     }
 
@@ -59,15 +54,14 @@
     @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("ToffoliSimulator")
     operation BorrowingManyQubits () : Unit {
-        borrowing (register = Qubit[1024]) {
-            AssertAllZero(register);
-            //Make sure the compiler doesn't cheat at us'
-            for(q in register)
-            {
-				X(q);
-            }
-            ResetAll(register);
+        borrow register = Qubit[1024];
+        AssertAllZero(register);
+        //Make sure the compiler doesn't cheat at us'
+        for q in register
+        {
+            X(q);
         }
+        ResetAll(register);
         Message("Test passed.");
     }
 }

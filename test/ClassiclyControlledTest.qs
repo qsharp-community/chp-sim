@@ -6,18 +6,17 @@
     @Test("QSharpCommunity.Simulators.Chp.StabilizerSimulator")
     @Test("QuantumSimulator")
     operation MeasurementAndMessageTest() : Unit {
-        using (q = Qubit()) {
-            H(q);
-            let r = M(q);
-            if (r == Zero) {
-                Dog();
-            }
-            else
-            {
-                Duck();
-            }
-            Reset(q);
+        use q = Qubit();
+        H(q);
+        let r = M(q);
+        if (r == Zero) {
+            Dog();
         }
+        else
+        {
+            Duck();
+        }
+        Reset(q);
         Message("Test passed.");
     }
 
