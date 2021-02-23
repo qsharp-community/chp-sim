@@ -8,17 +8,16 @@ namespace QSharpCommunity.Simulators.Chp.Sample {
     
     @EntryPoint()
     operation Test() : Unit {
-        using (q = Qubit()) {
-            DumpMachine();
-            let resultZero = M(q);
-            EqualityFactR(resultZero, Zero, "X didn't return correct measurement.");            
-            X(q);
-            DumpMachine();
-            let resultOne = M(q);
-            EqualityFactR(resultOne, One, "X didn't return correct measurement.");
-            DumpMachine();
-            if (M(q) == One) { X(q); }
-            DumpMachine();
-        }
+        use q = Qubit();
+        DumpMachine();
+        let resultZero = M(q);
+        EqualityFactR(resultZero, Zero, "X didn't return correct measurement.");            
+        X(q);
+        DumpMachine();
+        let resultOne = M(q);
+        EqualityFactR(resultOne, One, "X didn't return correct measurement.");
+        DumpMachine();
+        if (M(q) == One) { X(q); }
+        DumpMachine();
     }
 }
