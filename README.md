@@ -5,6 +5,10 @@ Based on the Python implementation by @Strilanc here: https://github.com/Strilan
 
 ## Motivation
 
+> **tl;dr** If we impose some constraints on quantum systems they can become way easier to simulate classically.
+>
+> This simulator uses one such set of constraints to simulate thousands of qubits easily which allows us to learn more about quantum algorithms we don't yet have the hardware to run or simulate in full generality.
+
 Simulating quantum systems on a classical computer is hard to do in full generalization, as the resources needed scale exponentially with the number of qubits you want to simulate (up to about ~30 qubits on a typical machine).
 If you impose some constraints on the operations you can do in your programs, you can use a different kind of simulator that allows you to simulate hundreds of qubits by using what is called a _classical sub-theory_ of quantum physics.
 There are a variety of sub-theories that each have a different set of constraints you have to work with to leverage it.
@@ -15,6 +19,8 @@ If you run a program with this simulator as the target, and you ask for an opera
 ## Build status
 
 ![Build](https://github.com/qsharp-community/chp-sim/workflows/Build/badge.svg)
+[![NuGet](https://img.shields.io/nuget/v/QSharpCommunity.Simulators.Chp)](https://www.nuget.org/packages/QSharpCommunity.Simulators.Chp/)
+[![QSharpCommunity.Simulators.Chp on fuget.org](https://www.fuget.org/packages/QSharpCommunity.Simulators.Chp/badge.svg)](https://www.fuget.org/packages/QSharpCommunity.Simulators.Chp)
 
 ## Code style
 
@@ -128,7 +134,6 @@ The basic idea in this case is build locally a version of the nuget package for 
 > cp .\bin\Debug\QSharpCommunity.Simulators.Chp.X.X.X.nupkg 'C:\Users\skais\nuget-packages\'
 ```
 
-
 ## Contribute
 
 Please see our [contributing guidelines](CONTRIBUTING.md) and our [code of conduct](CODE_OF_CONDUCT.md) before working on a contribution, thanks!
@@ -136,8 +141,8 @@ Please see our [contributing guidelines](CONTRIBUTING.md) and our [code of condu
 ## Credits
 
 - Primary developers: @crazy4pi314 @RolfHuisman
-
-#### Anything else that seems useful
+- Contributors: @cgranade
+### Notes
 
 If you need to check your intuition/understanding of the stabilizer formalism, you should check out these Python packages:
 - [Quaec](http://www.cgranade.com/python-quaec/)

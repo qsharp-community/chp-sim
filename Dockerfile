@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/quantum/iqsharp-base:0.15.2101126940
+FROM mcr.microsoft.com/quantum/iqsharp-base:0.15.2102129448
 
 ENV IQSHARP_HOSTING_ENV=CHP_DOCKER
 USER root
