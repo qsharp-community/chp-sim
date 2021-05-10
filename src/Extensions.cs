@@ -17,7 +17,7 @@ namespace QSharpCommunity.Simulators.Chp
     internal static class Extensions
     {
         /// <summary>
-        /// Set the diagonal line of the matix to the value.
+        /// Set the diagonal line of the matrix to the value.
         /// </summary>
         /// <typeparam name="T">Matrix type.</typeparam>
         /// <param name="matrix">The matrix.</param>
@@ -32,11 +32,11 @@ namespace QSharpCommunity.Simulators.Chp
         }
 
         /// <summary>
-        /// Swapped the collumns.
+        /// Swapped the columns.
         /// </summary>
         /// <param name="matrix">The matrix.</param>
-        /// <param name="idx1">Collum to swap with idx2.</param>
-        /// <param name="idx2">Collum to swap with idx1.</param>
+        /// <param name="idx1">Colum to swap with idx2.</param>
+        /// <param name="idx2">Colum to swap with idx1.</param>
         internal static void SwapColumns(this bool[,] matrix, int idx1, int idx2)
         {
             foreach (var idxRow in Enumerable.Range(0, matrix.GetLength(0)))
@@ -78,11 +78,11 @@ namespace QSharpCommunity.Simulators.Chp
         }
 
         /// <summary>
-        /// Represents the Row including the phase.
+        /// Represents the Row including the phase as a text string of Pauli operators.
         /// </summary>
         /// <param name="vector">Row represented as a vector.</param>
-        /// <returns>The rendered row including the phase.</returns>
-        internal static string RowToString(this bool[] vector)
+        /// <returns>The rendered row including the phase to a text string of Pauli operators.</returns>
+        internal static string RowToPauliString(this bool[] vector)
         {
             var (xs, zs, r) = vector.SplitRow();
             return (r ? "-" : "+") + string.Join(
@@ -98,12 +98,40 @@ namespace QSharpCommunity.Simulators.Chp
         }
 
         /// <summary>
-        /// Renders the row to a text string.
+        /// Renders the row to a text string of Pauli operators.
         /// </summary>
-        /// <param name="matrix">The Matrix.</param>
+        /// <param name="matrix">The matrix.</param>
         /// <param name="idx">Row index.</param>
-        /// <returns>A rendered string of the row.</returns>
-        internal static string RowToString(this bool[,] matrix, int idx) => matrix.Row(idx).ToArray().RowToString();
+        /// <returns>The rendered row including the phase to a text string of Pauli operators.</returns>
+        internal static string RowToPauliString(this bool[,] matrix, int idx) => matrix.Row(idx).ToArray().RowToPauliString();
+
+        /// <summary>
+        /// Represents the Row including the phase with latex symbols.
+        /// </summary>
+        /// <param name="vector">Row represented as a vector.</param>
+        /// <returns>The rendered row including the phase in latex format.</returns>
+        internal static string RowToPauliLatex(this bool[] vector)
+        {
+            var (xs, zs, r) = vector.SplitRow();
+            return (r ? "-" : "+") + string.Join(
+                string.Empty,
+                Enumerable.Zip(xs, zs, (x, z) =>
+                    (x, z) switch
+                    {
+                        (false, false) => "\\mathbb{1}",
+                        (true, false) => "X",
+                        (false, true) => "Z",
+                        (true, true) => "Y",
+                    }));
+        }
+
+        /// <summary>
+        /// Represents the Row including the phase with latex symbols.
+        /// </summary>
+        /// <param name="matrix">The matrix.</param>
+        /// <param name="idx">Row index.</param>
+        /// <returns>The rendered row including the phase in latex format.</returns>
+        internal static string RowToPauliLatex(this bool[,] matrix, int idx) => matrix.Row(idx).ToArray().RowToPauliLatex();
 
         /// <summary>
         /// Renders the row to a latex usable text string.
@@ -111,41 +139,49 @@ namespace QSharpCommunity.Simulators.Chp
         /// <param name="matrix">The Matrix.</param>
         /// <param name="idx">Row index.</param>
         /// <returns>A rendered string of the row.</returns>
-        internal static string RowToLatex(this bool[,] matrix, int idx) =>
+        internal static string RowToBinaryLatex(this bool[,] matrix, int idx) =>
             string.Join(" & ", matrix.Row(idx).ToArray().Select(val => val ? 1 : 0));
 
         /// <summary>
-        /// Renders the matrix to a text string.
+        /// Renders the matrix to a text string of Pauli operators.
         /// </summary>
         /// <param name="matrix">The Matrix.</param>
         /// <param name="showDestabilizers">Include the stabilizers in the string.</param>
-        /// <returns>A rendered string of the table.</returns>
-        internal static string MatrixToString(this bool[,] matrix, bool showDestabilizers = false) =>
-            "<" + string.Join(", ", Enumerable.Range(matrix.GetLength(0) / 2, matrix.GetLength(0) / 2).Select(idx => matrix.RowToString(idx))) + ">" +
+        /// <returns>A text string representation of the table as Pauli operators.</returns>
+        internal static string MatrixToPauliString(this bool[,] matrix, bool showDestabilizers = false) =>
+            "<" + string.Join(", ", Enumerable.Range(matrix.GetLength(0) / 2, matrix.GetLength(0) / 2).Select(idx => matrix.RowToPauliString(idx))) + ">" +
             (showDestabilizers ?
-            "| >" + string.Join(", ", Enumerable.Range(0, matrix.GetLength(0) / 2).Select(idx => matrix.RowToString(idx))) + "<" :
+            "| >" + string.Join(", ", Enumerable.Range(0, matrix.GetLength(0) / 2).Select(idx => matrix.RowToPauliString(idx))) + "<" :
             ">");
 
         /// <summary>
-        /// Renders the matrixto a latex usable text string.
+        /// Renders the group represented by the matrix to a latex string of Pauli operators.
         /// </summary>
-        /// <param name="matrix">The Matrix.</param>
+        /// <param name="matrix">The matrix.</param>
+        /// <returns>A latex string representation of the table as Pauli operators.</returns>
+        internal static string MatrixToPauliLatex(this bool[,] matrix) =>
+            "\\langle" + string.Join(", ", Enumerable.Range(matrix.GetLength(0) / 2, matrix.GetLength(0) / 2).Select(idx => matrix.RowToPauliLatex(idx))) + "\\rangle";
+
+        /// <summary>
+        /// Renders the matrix to a string representing a latex table.
+        /// </summary>
+        /// <param name="matrix">The matrix.</param>
         /// <param name="showDestabilizers">Include the stabilizers in the string.</param>
-        /// <returns>A rendered string of the table.</returns>
-        internal static string MatrixToLatexString(this bool[,] matrix, bool showDestabilizers = false) =>
+        /// <returns>A latex string representation of the matrix as latex table.</returns>
+        internal static string MatrixToBinaryLatexString(this bool[,] matrix, bool showDestabilizers = false) =>
             (
                 showDestabilizers
                 ? string.Join(
-                    @" \\", Enumerable.Range(0, matrix.GetLength(0) / 2).Select(idx => matrix.RowToLatex(idx))) + @" \\ \hline"
+                    @" \\", Enumerable.Range(0, matrix.GetLength(0) / 2).Select(idx => matrix.RowToBinaryLatex(idx))) + @" \\ \hline"
                 : string.Empty) +
-            string.Join(@" \\", Enumerable.Range(matrix.GetLength(0) / 2, matrix.GetLength(0) / 2).Select(idx => matrix.RowToLatex(idx)));
+            string.Join(@" \\", Enumerable.Range(matrix.GetLength(0) / 2, matrix.GetLength(0) / 2).Select(idx => matrix.RowToBinaryLatex(idx)));
 
         /// <summary>
-        /// Split the row into; stabalizers, destabilzers, and phase.
+        /// Split the row into; stabilizers, destabilizers, and phase.
         /// </summary>
         /// <param name="row">Boolean representation of the row.</param>
-        /// <returns>3-Element Tuple with seperated stabalizers, destabilzers, and phase.</returns>
-        internal static (bool[] Stabalizers, bool[] DeStabilzers, bool Phase) SplitRow(this IEnumerable<bool> row)
+        /// <returns>3-Element Tuple with seperated stabilizers, destabilizers, and phase.</returns>
+        internal static (bool[] Stabilizers, bool[] DeStabilizers, bool Phase) SplitRow(this IEnumerable<bool> row)
         {
             var vector = row.ToArray();
             var nQubits = (vector.Length - 1) / 2;

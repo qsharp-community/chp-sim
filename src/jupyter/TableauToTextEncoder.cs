@@ -30,7 +30,7 @@ namespace QSharpCommunity.Simulators.Chp
         {
             if (displayable is StabilizerTableau tableau)
             {
-                return tableau.Data.MatrixToString(true).ToEncodedData();
+                return tableau.Data.MatrixToPauliString(true).ToEncodedData();
             }
             else
             {

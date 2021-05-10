@@ -8,8 +8,6 @@
 namespace QSharpCommunity.Simulators.Chp
 {
     using System;
-    using Microsoft.Jupyter.Core;
-    using Microsoft.Quantum.IQSharp.Jupyter;
 
     /// <summary>
     /// Representation of the Tableau.
