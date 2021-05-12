@@ -20,7 +20,8 @@ namespace QSharpCommunity.Simulators.Chp
         private enum DumpFormat 
         {
             Matrix,
-            DensePaulis
+            DensePaulis,
+            SparsePaulis
         }
 
         /// <summary>
@@ -68,10 +69,18 @@ namespace QSharpCommunity.Simulators.Chp
                         return outputTable.ToEncodedData();
                 }
 
-                // Display the tableau as a list of Pauli operators
+                // Display the tableau as a list of Pauli operators.
                 else if (dumpFormat == DumpFormat.DensePaulis) 
                 {
                     var stabilizerList = tableau.Data.MatrixToPauliLatex();
+                    var outputLine = $@"${stabilizerList}$";
+                    return outputLine.ToEncodedData();
+                }
+
+                // Display the tableau as a list of Pauli operators, omitting the identities.
+                else if (dumpFormat == DumpFormat.SparsePaulis) 
+                {
+                    var stabilizerList = tableau.Data.MatrixToSparsePauliLatex();
                     var outputLine = $@"${stabilizerList}$";
                     return outputLine.ToEncodedData();
                 }

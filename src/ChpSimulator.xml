@@ -53,35 +53,24 @@
             <param name="idxColumn">The column that needs to be returned.</param>
             <returns>The row highlighted by idxColumn.</returns>
         </member>
-        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.RowToPauliString(System.Boolean[])">
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.RowToPauliString(System.Boolean[],System.Boolean,System.Boolean)">
             <summary>
             Represents the Row including the phase as a text string of Pauli operators.
             </summary>
             <param name="vector">Row represented as a vector.</param>
+            <param name="asLatex">Should the text be formatted for a LaTeX presentation</param>
+            <param name="asSparse">Should the representation leave out identities?</param>
             <returns>The rendered row including the phase to a text string of Pauli operators.</returns>
         </member>
-        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.RowToPauliString(System.Boolean[0:,0:],System.Int32)">
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.RowToPauliString(System.Boolean[0:,0:],System.Int32,System.Boolean,System.Boolean)">
             <summary>
             Renders the row to a text string of Pauli operators.
             </summary>
             <param name="matrix">The matrix.</param>
             <param name="idx">Row index.</param>
+            <param name="asLatex">Should the text be formatted for a LaTeX presentation</param>
+            <param name="asSparse">Should the representation leave out identities?</param>
             <returns>The rendered row including the phase to a text string of Pauli operators.</returns>
-        </member>
-        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.RowToPauliLatex(System.Boolean[])">
-            <summary>
-            Represents the Row including the phase with latex symbols.
-            </summary>
-            <param name="vector">Row represented as a vector.</param>
-            <returns>The rendered row including the phase in latex format.</returns>
-        </member>
-        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.RowToPauliLatex(System.Boolean[0:,0:],System.Int32)">
-            <summary>
-            Represents the Row including the phase with latex symbols.
-            </summary>
-            <param name="matrix">The matrix.</param>
-            <param name="idx">Row index.</param>
-            <returns>The rendered row including the phase in latex format.</returns>
         </member>
         <member name="M:QSharpCommunity.Simulators.Chp.Extensions.RowToBinaryLatex(System.Boolean[0:,0:],System.Int32)">
             <summary>
@@ -100,6 +89,13 @@
             <returns>A text string representation of the table as Pauli operators.</returns>
         </member>
         <member name="M:QSharpCommunity.Simulators.Chp.Extensions.MatrixToPauliLatex(System.Boolean[0:,0:])">
+            <summary>
+            Renders the group represented by the matrix to a latex string of Pauli operators.
+            </summary>
+            <param name="matrix">The matrix.</param>
+            <returns>A latex string representation of the table as Pauli operators.</returns>
+        </member>
+        <member name="M:QSharpCommunity.Simulators.Chp.Extensions.MatrixToSparsePauliLatex(System.Boolean[0:,0:])">
             <summary>
             Renders the group represented by the matrix to a latex string of Pauli operators.
             </summary>

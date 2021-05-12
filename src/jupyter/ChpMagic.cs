@@ -21,7 +21,6 @@ namespace QSharpCommunity.Simulators.Chp
     {
         private const string ParameterNameOperationName = "__operationName__";
         private const int DefaultNQubits = 1024;
-        private const string DefaultDumpFormat = "dense-paulis";
         private readonly IConfigurationSource configurationSource;
 
         /// <summary>

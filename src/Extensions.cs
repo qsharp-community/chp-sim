@@ -81,20 +81,45 @@ namespace QSharpCommunity.Simulators.Chp
         /// Represents the Row including the phase as a text string of Pauli operators.
         /// </summary>
         /// <param name="vector">Row represented as a vector.</param>
+        /// <param name="asLatex">Should the text be formatted for a LaTeX presentation</param>
+        /// <param name="asSparse">Should the representation leave out identities?</param>
         /// <returns>The rendered row including the phase to a text string of Pauli operators.</returns>
-        internal static string RowToPauliString(this bool[] vector)
+        internal static string RowToPauliString(this bool[] vector, bool asLatex = false, bool asSparse = false)
         {
             var (xs, zs, r) = vector.SplitRow();
-            return (r ? "-" : "+") + string.Join(
+            if (asSparse) 
+            {
+                var factors = Enumerable
+                    .Zip(xs, zs, (x, z) => (x, z))
+                    .Select((e, i) => (e, i))
+                    .Where(ei => ei.e.x || ei.e.z)
+                    .Select(ei => (ei.e.x, ei.e.z) switch
+                    {
+                        (false, false) => throw new Exception("Should never happen, but can't prove that."),
+                        (true, false) => asLatex ? $"X_{{{ei.i}}}" : $"X{ei.i}",
+                        (false, true) => asLatex ? $"Y_{{{ei.i}}}" : $"Y{ei.i}",
+                        (true, true) => asLatex ? $"Z_{{{ei.i}}}" : $"Z{ei.i}"
+                    })
+                    .ToList();
+                return (r ? "-" : "+") + (
+                    factors.Any()
+                        ? string.Join(string.Empty, factors)
+                        : asLatex ? "\\mathbb{1}" : "I"
+                );                
+            }
+            else{
+                return (r ? "-" : "+") + string.Join(
                 string.Empty,
                 Enumerable.Zip(xs, zs, (x, z) =>
                     (x, z) switch
                     {
-                        (false, false) => "I",
+                        (false, false) => asLatex ? "\\mathbb{1}" :"I",
                         (true, false) => "X",
                         (false, true) => "Z",
                         (true, true) => "Y",
                     }));
+            }
+            
         }
 
         /// <summary>
@@ -102,36 +127,10 @@ namespace QSharpCommunity.Simulators.Chp
         /// </summary>
         /// <param name="matrix">The matrix.</param>
         /// <param name="idx">Row index.</param>
+        /// <param name="asLatex">Should the text be formatted for a LaTeX presentation</param>
+        /// <param name="asSparse">Should the representation leave out identities?</param>
         /// <returns>The rendered row including the phase to a text string of Pauli operators.</returns>
-        internal static string RowToPauliString(this bool[,] matrix, int idx) => matrix.Row(idx).ToArray().RowToPauliString();
-
-        /// <summary>
-        /// Represents the Row including the phase with latex symbols.
-        /// </summary>
-        /// <param name="vector">Row represented as a vector.</param>
-        /// <returns>The rendered row including the phase in latex format.</returns>
-        internal static string RowToPauliLatex(this bool[] vector)
-        {
-            var (xs, zs, r) = vector.SplitRow();
-            return (r ? "-" : "+") + string.Join(
-                string.Empty,
-                Enumerable.Zip(xs, zs, (x, z) =>
-                    (x, z) switch
-                    {
-                        (false, false) => "\\mathbb{1}",
-                        (true, false) => "X",
-                        (false, true) => "Z",
-                        (true, true) => "Y",
-                    }));
-        }
-
-        /// <summary>
-        /// Represents the Row including the phase with latex symbols.
-        /// </summary>
-        /// <param name="matrix">The matrix.</param>
-        /// <param name="idx">Row index.</param>
-        /// <returns>The rendered row including the phase in latex format.</returns>
-        internal static string RowToPauliLatex(this bool[,] matrix, int idx) => matrix.Row(idx).ToArray().RowToPauliLatex();
+        internal static string RowToPauliString(this bool[,] matrix, int idx, bool asLatex = false, bool asSparse = false) => matrix.Row(idx).ToArray().RowToPauliString(asLatex, asSparse);
 
         /// <summary>
         /// Renders the row to a latex usable text string.
@@ -149,9 +148,9 @@ namespace QSharpCommunity.Simulators.Chp
         /// <param name="showDestabilizers">Include the stabilizers in the string.</param>
         /// <returns>A text string representation of the table as Pauli operators.</returns>
         internal static string MatrixToPauliString(this bool[,] matrix, bool showDestabilizers = false) =>
-            "<" + string.Join(", ", Enumerable.Range(matrix.GetLength(0) / 2, matrix.GetLength(0) / 2).Select(idx => matrix.RowToPauliString(idx))) + ">" +
+            "<" + string.Join(", ", Enumerable.Range(matrix.GetLength(0) / 2, matrix.GetLength(0) / 2).Select(idx => matrix.RowToPauliString(idx, false, false))) + ">" +
             (showDestabilizers ?
-            "| >" + string.Join(", ", Enumerable.Range(0, matrix.GetLength(0) / 2).Select(idx => matrix.RowToPauliString(idx))) + "<" :
+            "| >" + string.Join(", ", Enumerable.Range(0, matrix.GetLength(0) / 2).Select(idx => matrix.RowToPauliString(idx, false, false))) + "<" :
             ">");
 
         /// <summary>
@@ -160,7 +159,15 @@ namespace QSharpCommunity.Simulators.Chp
         /// <param name="matrix">The matrix.</param>
         /// <returns>A latex string representation of the table as Pauli operators.</returns>
         internal static string MatrixToPauliLatex(this bool[,] matrix) =>
-            "\\langle" + string.Join(", ", Enumerable.Range(matrix.GetLength(0) / 2, matrix.GetLength(0) / 2).Select(idx => matrix.RowToPauliLatex(idx))) + "\\rangle";
+            "\\langle" + string.Join(", ", Enumerable.Range(matrix.GetLength(0) / 2, matrix.GetLength(0) / 2).Select(idx => matrix.RowToPauliString(idx, true, false))) + "\\rangle";
+
+        /// <summary>
+        /// Renders the group represented by the matrix to a latex string of Pauli operators.
+        /// </summary>
+        /// <param name="matrix">The matrix.</param>
+        /// <returns>A latex string representation of the table as Pauli operators.</returns>
+        internal static string MatrixToSparsePauliLatex(this bool[,] matrix) =>
+            "\\langle" + string.Join(", ", Enumerable.Range(matrix.GetLength(0) / 2, matrix.GetLength(0) / 2).Select(idx => matrix.RowToPauliString(idx, true, true))) + "\\rangle";
 
         /// <summary>
         /// Renders the matrix to a string representing a latex table.
