@@ -12,11 +12,17 @@ namespace QSharpCommunity.Simulators.Chp
     using Microsoft.Quantum.IQSharp.Jupyter;
 
     /// <summary>
-    /// Encodes the Tableau in HTML so it can be rendered by jupiter.
+    /// Encodes the Tableau in HTML so it can be rendered by Jupyter.
     /// </summary>
     public class TableauToHtmlEncoder : IResultEncoder
     {
         private readonly IConfigurationSource configurationSource;
+        private enum DumpFormat 
+        {
+            Matrix,
+            DensePaulis,
+            SparsePaulis
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TableauToHtmlEncoder"/> class.
@@ -42,18 +48,48 @@ namespace QSharpCommunity.Simulators.Chp
             if (displayable is StabilizerTableau tableau)
             {
                 var showDestabilizers =
-                    this.configurationSource.Configuration.TryGetValue("chp.showDestabilizers", out var token) && token.ToObject<bool>();
+                    this.configurationSource.GetOptionOrDefault<bool>("chp.showDestabilizers", false);
 
                 var nQubits = tableau.Data.GetLength(0) / 2;
-                var tableFormat = new string('c', nQubits);
-                var tableRows = tableau.Data.MatrixToLatexString(showDestabilizers);
+                
+                var dumpFormat = 
+                    this.configurationSource.GetOptionOrDefault<DumpFormat>("chp.dumpFormat", DumpFormat.DensePaulis);
 
-                var outputTable = $@"
-                $\left(\begin{{array}}{{{tableFormat}|{tableFormat}|c}}
-                {tableRows}
-                \end{{array}} \right)$";
+                // Display the tableau as a matrix
+                if (dumpFormat == DumpFormat.Matrix) 
+                {
+                        var tableFormat = new string('c', nQubits);
+                        var tableRows = tableau.Data.MatrixToBinaryLatexString(showDestabilizers);
 
-                return outputTable.ToEncodedData();
+                        var outputTable = $@"
+                        $\left(\begin{{array}}{{{tableFormat}|{tableFormat}|c}}
+                        {tableRows}
+                        \end{{array}} \right)$";
+
+                        return outputTable.ToEncodedData();
+                }
+
+                // Display the tableau as a list of Pauli operators.
+                else if (dumpFormat == DumpFormat.DensePaulis) 
+                {
+                    var stabilizerList = tableau.Data.MatrixToPauliLatex();
+                    var outputLine = $@"${stabilizerList}$";
+                    return outputLine.ToEncodedData();
+                }
+
+                // Display the tableau as a list of Pauli operators, omitting the identities.
+                else if (dumpFormat == DumpFormat.SparsePaulis) 
+                {
+                    var stabilizerList = tableau.Data.MatrixToSparsePauliLatex();
+                    var outputLine = $@"${stabilizerList}$";
+                    return outputLine.ToEncodedData();
+                }
+
+                else 
+                { // message that the dumpformat is not supported.
+                    return null;
+                }
+
             }
             else
             {

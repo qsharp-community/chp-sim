@@ -149,11 +149,11 @@ namespace QSharpCommunity.Simulators.Chp
             });
             if (location is QVoid)
             {
-                System.Console.WriteLine(this.table.MatrixToString(true));
+                System.Console.WriteLine(this.table.MatrixToPauliString(true));
             }
             else if (location is string filename)
             {
-                File.WriteAllText(filename, this.table.MatrixToString(true));
+                File.WriteAllText(filename, this.table.MatrixToPauliString(true));
             }
             else
             {

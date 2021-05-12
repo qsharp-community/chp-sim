@@ -86,9 +86,9 @@ namespace QSharpCommunity.Simulators.Chp
         /// Simulates a function/operation using the ChpSimulator as target machine.
         /// It expects a single input: the name of the function/operation to simulate.
         /// </summary>
-        /// <param name="input">current parameters for the fuinction.</param>
-        /// <param name="channel">channal connecting up with jupiter.</param>
-        /// <returns>funtion result.</returns>
+        /// <param name="input">current parameters for the function.</param>
+        /// <param name="channel">channel connecting up with Jupyter.</param>
+        /// <returns>function result.</returns>
         public async Task<ExecutionResult> RunAsync(string input, IChannel channel)
         {
             var inputParameters = ParseInputParameters(input, firstParameterInferredName: ParameterNameOperationName);
@@ -100,15 +100,11 @@ namespace QSharpCommunity.Simulators.Chp
                 throw new InvalidOperationException($"Invalid operation name: {name}");
             }
 
-            // TODO: File bug for the following to be public:
-            // https://github.com/microsoft/iqsharp/blob/9fa7d4da4ec0401bf5803e40fce5b37e716c3574/src/Jupyter/ConfigurationSource.cs#L35
             var nQubits =
-                this.configurationSource.Configuration.TryGetValue("chp.nQubits", out var token)
-                ? token.ToObject<int>()
-                : DefaultNQubits;
+                this.configurationSource.GetOptionOrDefault<int>("chp.nQubits", DefaultNQubits);
 
             var debug =
-                this.configurationSource.Configuration.TryGetValue("chp.debug", out var tokenDebug) && tokenDebug.ToObject<bool>();
+                this.configurationSource.GetOptionOrDefault<bool>("chp.debug", false);
 
             var qsim = new StabilizerSimulator(nQubits).WithStackTraceDisplay(channel);
             qsim.DisableLogToConsole();
