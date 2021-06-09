@@ -1,4 +1,7 @@
 # CHP simulator for Q\#
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This library implements a new classical simulator for Q# that utilizes the CHP stabilizer classical sub-theory.
 Based on the Python implementation by @Strilanc here: https://github.com/Strilanc/python-chp-stabilizer-simulator.
@@ -151,3 +154,23 @@ If you need to check your intuition/understanding of the stabilizer formalism, y
 ## License
 
 MIT © [Sarah Kaiser](https://github.com/qsharp-community/chp-sim/blob/master/LICENSE)
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/RolfHuisman"><img src="https://avatars.githubusercontent.com/u/39134931?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rolf Huisman</b></sub></a><br /><a href="#infra-RolfHuisman" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/qsharp-community/chp-sim/commits?author=RolfHuisman" title="Tests">⚠️</a> <a href="https://github.com/qsharp-community/chp-sim/commits?author=RolfHuisman" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
