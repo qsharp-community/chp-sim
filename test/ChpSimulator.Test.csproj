@@ -1,16 +1,16 @@
-<Project Sdk="Microsoft.Quantum.Sdk/0.18.2107153439">
+﻿<Project Sdk="Microsoft.Quantum.Sdk/0.28.302812">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Quantum.Xunit" Version="0.18.2107153439" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.2">
+    <PackageReference Include="Microsoft.Quantum.Xunit" Version="0.28.302812" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -19,6 +19,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\src\ChpSimulator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.Quantum.QSharp.Core" Version="0.28.302812" />
+    <PackageReference Update="Microsoft.Quantum.Standard" Version="0.28.302812" />
   </ItemGroup>
 
 </Project>
