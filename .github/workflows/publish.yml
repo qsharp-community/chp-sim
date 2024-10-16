@@ -20,11 +20,11 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
     # https://stackoverflow.com/questions/57889719/how-to-push-nuget-package-in-github-actions
-    - name: "Setup .NET Core @ Latest"
-      uses: actions/setup-dotnet@v1
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '3.1.101'  #https://github.com/NuGet/Home/issues/3406 Went to a patch version that seems to work
-        source-url: https://nuget.pkg.github.com/qsharp-community/index.json
+          dotnet-version: '8.0.x'
+          source-url: https://nuget.pkg.github.com/qsharp-community/index.json
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}       
       
