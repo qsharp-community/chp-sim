@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.12.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="../src/ChpSimulator.csproj" />
   </ItemGroup>
 
